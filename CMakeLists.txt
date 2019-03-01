@@ -69,6 +69,7 @@ add_dependencies(${target_name} Windows-CalcEngine)
 
 if( BUILD_KeffC_TESTING )
   	include_directories(src)
+	include_directories(include)
   	
   	file( GLOB all_test_src RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "tst/*.cxx" )
     LIST( APPEND test_src ${all_test_src} )
