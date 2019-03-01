@@ -7,8 +7,12 @@ namespace KeffCavity
     //// INusselt
     //////////////////////////////////////////////////////////////////////
 
-    INusselt::INusselt(
-      const double L, const double H, const double T1, const double T2, Gases::CGas & gasC, const double length) :
+    INusselt::INusselt(const double L,
+                       const double H,
+                       const double T1,
+                       const double T2,
+                       Gases::CGas & gasC,
+                       const double length) :
         ratio(L / H),
         dT(std::abs(T1 - T2)),
         Tavg((T1 + T2) * 0.5),
@@ -16,10 +20,11 @@ namespace KeffCavity
         Ra(RaCalc(dT, Tavg, length, gasC))
     {}
 
-    double INusselt::RaCalc(double dT, double Tavg, double length, Gases::CGas &gasC){
+    double INusselt::RaCalc(double dT, double Tavg, double length, Gases::CGas & gasC)
+    {
         auto gas = gasC.getGasProperties();
-        return 9.81 * gas.m_Density * gas.m_Density * gas.m_SpecificHeat * dT * length * length * length
-               / (Tavg * gas.m_Viscosity * gas.m_ThermalConductivity);
+        return 9.81 * gas.m_Density * gas.m_Density * gas.m_SpecificHeat * dT * length * length
+               * length / (Tavg * gas.m_Viscosity * gas.m_ThermalConductivity);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -72,7 +77,7 @@ namespace KeffCavity
     }
 
     //////////////////////////////////////////////////////////////////////
-    //// NusseltISO15099Upward
+    //// NusseltISO15099Horizontal
     //////////////////////////////////////////////////////////////////////
     NusseltISO15099Horizontal::NusseltISO15099Horizontal(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
@@ -82,15 +87,15 @@ namespace KeffCavity
     double NusseltISO15099Horizontal::value() const
     {
         double Nu{0};
-        if((1.0 / ratio) < 1.0 / 2.0)
+        if(ratio > 2.0)
         {
             Nu = Nu1(ratio);
         }
-        if((1.0 / ratio) > 5)
+        if(ratio < 1.0 / 5.0)
         {
             Nu = Nu2(ratio);
         }
-        if(1.0 / 2.0 <= 1.0 / ratio && 1.0 / ratio <= 5.0)
+        if(ratio >= 1.0 / 5.0 && ratio <= 2.0)
         {
             const auto lowPoint = 1.0 / 5.0;
             const auto highPoint = 2.0;
@@ -104,7 +109,8 @@ namespace KeffCavity
         return 1.0
                + std::pow(
                  std::pow(2.756e-6 * Ra * Ra * std::pow(1.0 / aRatio, 8.0), -0.386)
-                   + std::pow(0.623 * std::pow(Ra, 1.0 / 5.0) * std::pow(aRatio, 2.0 / 5.0), -0.386),
+                   + std::pow(0.623 * std::pow(Ra, 1.0 / 5.0) * std::pow(aRatio, 2.0 / 5.0),
+                              -0.386),
                  -2.59);
     }
 
