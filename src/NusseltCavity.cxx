@@ -85,7 +85,7 @@ namespace KeffCavity
         {
             Nu = Nu2(ratio);
         }
-        if(1.0 / 2.0 < 1.0 / ratio && 1.0 / ratio < 5.0)
+        if(1.0 / 2.0 <= 1.0 / ratio && 1.0 / ratio <= 5.0)
         {
             const auto lowPoint = 1.0 / 5.0;
             const auto highPoint = 2.0;
