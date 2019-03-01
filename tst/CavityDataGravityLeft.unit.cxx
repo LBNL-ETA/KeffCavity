@@ -7,7 +7,7 @@ using KeffCavity::Ventilated;
 using KeffCavity::ScreenFlow;
 using KeffCavity::CavitySide;
 
-class TestCavityDataGravityRight : public testing::Test
+class TestCavityDataGravityLeft : public testing::Test
 {
 protected:
     Ventilated ventilated{Ventilated::NO};
@@ -15,7 +15,7 @@ protected:
     const double maxYDimension {0.8};
     const double jambHeight {1.5};
     const double area {1.0};
-    GravityVector gravity{-1.0, 0.0, 0.0};
+    GravityVector gravity{1.0, 0.0, 0.0};
     const CavitySide side1 {10, 0.9};
     const CavitySide side2 {20, 0.9};
 
@@ -23,7 +23,7 @@ protected:
     {}
 };
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowLeft)
+TEST_F(TestCavityDataGravityLeft, TestCavityFlowLeft)
 {
     ScreenFlow flow{ScreenFlow::Left};
 
@@ -35,7 +35,7 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowLeft)
     EXPECT_EQ(cavityFlow.H, maxXDimension);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowRight)
+TEST_F(TestCavityDataGravityLeft, TestCavityFlowRight)
 {
     ScreenFlow flow{ScreenFlow::Right};
 
@@ -47,7 +47,7 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowRight)
     EXPECT_EQ(cavityFlow.H, maxXDimension);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowUpward)
+TEST_F(TestCavityDataGravityLeft, TestCavityFlowUpward)
 {
     ScreenFlow flow{ScreenFlow::Up};
 
@@ -59,7 +59,7 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowUpward)
     EXPECT_EQ(cavityFlow.H, maxXDimension);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowDownward)
+TEST_F(TestCavityDataGravityLeft, TestCavityFlowDownward)
 {
     ScreenFlow flow{ScreenFlow::Down};
 

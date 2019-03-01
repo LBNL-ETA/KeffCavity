@@ -7,7 +7,7 @@ using KeffCavity::Ventilated;
 using KeffCavity::ScreenFlow;
 using KeffCavity::CavitySide;
 
-class TestCavityDataGravityRight : public testing::Test
+class TestCavityDataGravityIntoScreen : public testing::Test
 {
 protected:
     Ventilated ventilated{Ventilated::NO};
@@ -15,7 +15,7 @@ protected:
     const double maxYDimension {0.8};
     const double jambHeight {1.5};
     const double area {1.0};
-    GravityVector gravity{-1.0, 0.0, 0.0};
+    GravityVector gravity{0.0, 0.0, -1.0};
     const CavitySide side1 {10, 0.9};
     const CavitySide side2 {20, 0.9};
 
@@ -23,7 +23,7 @@ protected:
     {}
 };
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowLeft)
+TEST_F(TestCavityDataGravityIntoScreen, TestCavityFlowLeft)
 {
     ScreenFlow flow{ScreenFlow::Left};
 
@@ -31,11 +31,11 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowLeft)
       ventilated, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
-    EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.L, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, jambHeight);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowRight)
+TEST_F(TestCavityDataGravityIntoScreen, TestCavityFlowRight)
 {
     ScreenFlow flow{ScreenFlow::Right};
 
@@ -43,11 +43,11 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowRight)
       ventilated, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
-    EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.L, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, jambHeight);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowUpward)
+TEST_F(TestCavityDataGravityIntoScreen, TestCavityFlowUpward)
 {
     ScreenFlow flow{ScreenFlow::Up};
 
@@ -56,10 +56,10 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowUpward)
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, jambHeight);
 }
 
-TEST_F(TestCavityDataGravityRight, TestCavityFlowDownward)
+TEST_F(TestCavityDataGravityIntoScreen, TestCavityFlowDownward)
 {
     ScreenFlow flow{ScreenFlow::Down};
 
@@ -68,5 +68,5 @@ TEST_F(TestCavityDataGravityRight, TestCavityFlowDownward)
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, jambHeight);
 }
