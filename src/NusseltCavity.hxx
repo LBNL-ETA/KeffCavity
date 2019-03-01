@@ -22,20 +22,20 @@ namespace KeffCavity
     };
 
     //! \brief Nusselt number for downward heat flow calculations
-    class NusseltDownward : public INusselt
+    class NusseltISO15099Downward : public INusselt
     {
     public:
-        NusseltDownward(
+        NusseltISO15099Downward(
           const double L, const double H, const double T1, const double T2, Gases::CGas & gas);
 
         double value() const override;
     };
 
     //! \brief Nusselt number for upward heat flow calculations
-    class NusseltUpward : public INusselt
+    class NusseltISO15099Upward : public INusselt
     {
     public:
-        NusseltUpward(
+        NusseltISO15099Upward(
           const double L, const double H, const double T1, const double T2, Gases::CGas & gas);
 
         double value() const override;
@@ -43,4 +43,20 @@ namespace KeffCavity
     private:
         double pos(const double x) const;
     };
+
+    //! \brief Nusselt number for horizontal heat flow calculations
+    class NusseltISO15099Horizontal : public INusselt
+    {
+    public:
+        NusseltISO15099Horizontal(
+          const double L, const double H, const double T1, const double T2, Gases::CGas & gas);
+
+        double value() const override;
+
+    private:
+        double Nu1(double aRatio) const;
+        double Nu2(double aRatio) const;
+        double LinearInterp(double x, double x1, double y1, double x2, double y2) const;
+    };
+
 }   // namespace KeffCavity

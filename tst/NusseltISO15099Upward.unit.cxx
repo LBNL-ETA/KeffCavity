@@ -17,8 +17,8 @@ TEST_F(TestNusseltISO15099Upward, TestISO15099UpwardRatio1)
     const double H = 1.0;
     const double T1 = 293.15;
     const double T2 = 293.15;
-    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltUpward>(
-      new KeffCavity::NusseltUpward(L, H, T1, T2, gas));
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Upward>(
+      new KeffCavity::NusseltISO15099Upward(L, H, T1, T2, gas));
 
     const double Nu = nu->value();
 
@@ -34,8 +34,8 @@ TEST_F(TestNusseltISO15099Upward, TestISO15099UpwardRatioBetween1and5)
     const double T2 = 274.0;
     const double pressure = 101325;
     gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
-    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltUpward>(
-            new KeffCavity::NusseltUpward(L, H, T1, T2, gas));
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Upward>(
+            new KeffCavity::NusseltISO15099Upward(L, H, T1, T2, gas));
 
     const double Nu = nu->value();
 
@@ -51,8 +51,8 @@ TEST_F(TestNusseltISO15099Upward, TestISO15099UpwardRatioGreaterThan5)
     const double T2 = 274.0;
     const double pressure = 101325;
     gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
-    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltUpward>(
-            new KeffCavity::NusseltUpward(L, H, T1, T2, gas));
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Upward>(
+            new KeffCavity::NusseltISO15099Upward(L, H, T1, T2, gas));
 
     const double Nu = nu->value();
 

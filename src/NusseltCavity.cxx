@@ -18,27 +18,27 @@ namespace KeffCavity
     {}
 
     //////////////////////////////////////////////////////////////////////
-    //// NusseltDownward
+    //// NusseltISO15099Downward
     //////////////////////////////////////////////////////////////////////
-    NusseltDownward::NusseltDownward(
+    NusseltISO15099Downward::NusseltISO15099Downward(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
         INusselt(L, H, T1, T2, gas)
     {}
 
-    double NusseltDownward::value() const
+    double NusseltISO15099Downward::value() const
     {
         return 1.0;
     }
 
     //////////////////////////////////////////////////////////////////////
-    //// NusseltUpward
+    //// NusseltISO15099Upward
     //////////////////////////////////////////////////////////////////////
-    NusseltUpward::NusseltUpward(
+    NusseltISO15099Upward::NusseltISO15099Upward(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
         INusselt(L, H, T1, T2, gas)
     {}
 
-    double NusseltUpward::value() const
+    double NusseltISO15099Upward::value() const
     {
         double Nu{1.0};
         if((1 < ratio) && (ratio <= 5))
@@ -61,10 +61,69 @@ namespace KeffCavity
         return Nu;
     }
 
-    double NusseltUpward::pos(const double x) const
+    double NusseltISO15099Upward::pos(const double x) const
     {
         return (x < 0.0) ? 0.0 : x;
     }
 
+    //////////////////////////////////////////////////////////////////////
+    //// NusseltISO15099Upward
+    //////////////////////////////////////////////////////////////////////
+    NusseltISO15099Horizontal::NusseltISO15099Horizontal(
+      const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
+        INusselt(L, H, T1, T2, gas)
+    {}
+
+    double NusseltISO15099Horizontal::value() const
+    {
+        double Nu{0};
+        if((1.0 / ratio) < 1.0 / 2.0)
+        {
+            Nu = Nu1(ratio);
+        }
+        if((1.0 / ratio) > 5)
+        {
+            Nu = Nu2(ratio);
+        }
+        if(1.0 / 2.0 < 1.0 / ratio && 1.0 / ratio < 5.0)
+        {
+            const auto lowPoint = 1.0 / 5.0;
+            const auto highPoint = 2.0;
+            Nu = LinearInterp(ratio, lowPoint, Nu1(lowPoint), highPoint, Nu2(highPoint));
+        }
+        return Nu;
+    }
+
+    double NusseltISO15099Horizontal::Nu1(const double aRatio) const
+    {
+        return 1.0
+               + std::pow(
+                 std::pow(2.756e-6 * Ra * Ra * std::pow(1.0 / aRatio, 8.0), -0.386)
+                   + std::pow(0.623 * std::pow(Ra, 1.0 / 5.0) * std::pow(aRatio, 2.0 / 5.0), -0.386),
+                 -2.59);
+    }
+
+    double NusseltISO15099Horizontal::Nu2(const double aRatio) const
+    {
+        auto Nu_ct = std::pow(
+          1.0 + std::pow(0.104 * std::pow(Ra, 0.293) / (1.0 + std::pow(6310.0 / Ra, 1.36)), 3.0),
+          1.0 / 3.0);
+        auto Nu_l = 0.242 * pow(Ra * aRatio, 0.273);
+        auto Nu_t = 0.0605 * pow(Ra, 1.0 / 3.0);
+        Nu_ct = std::max(Nu_ct, Nu_l);
+        return std::max(Nu_ct, Nu_t);
+    }
+
+    double NusseltISO15099Horizontal::LinearInterp(
+      const double x, const double x1, const double y1, const double x2, const double y2) const
+    {
+        if(x <= x1)
+            return y1;
+        if(x >= x2)
+            return y2;
+
+
+        return (y1 + (x - x1) * (y2 - y1) / (x2 - x1));
+    }
 
 }   // namespace KeffCavity

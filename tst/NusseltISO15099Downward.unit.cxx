@@ -18,8 +18,8 @@ TEST_F(TestNusseltISO15099Downward, TestISO15099Downward)
     const double T1 = 293.15;
     const double T2 = 293.15;
 
-    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltDownward>(
-      new KeffCavity::NusseltDownward(L, H, T1, T2, gas));
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Downward>(
+      new KeffCavity::NusseltISO15099Downward(L, H, T1, T2, gas));
 
     const double Nu = nu->value();
 
