@@ -55,8 +55,8 @@ TEST_F(TestCavityDataGravityDown, TestCavityFlowUpward)
       ventilated, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
-    EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.L, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, maxYDimension);
 }
 
 TEST_F(TestCavityDataGravityDown, TestCavityFlowDownward)
@@ -67,6 +67,6 @@ TEST_F(TestCavityDataGravityDown, TestCavityFlowDownward)
             ventilated, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
-    EXPECT_EQ(cavityFlow.L, maxYDimension);
-    EXPECT_EQ(cavityFlow.H, maxXDimension);
+    EXPECT_EQ(cavityFlow.L, maxXDimension);
+    EXPECT_EQ(cavityFlow.H, maxYDimension);
 }
