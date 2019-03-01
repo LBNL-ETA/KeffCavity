@@ -9,11 +9,18 @@ namespace KeffCavity
     {
     public:
         INusselt(
-          const double L, const double H, const double T1, const double T2, Gases::CGas & gas);
+          const double L, //!< Frame cavity length as described in ISO15099 standard
+          const double H, //!< Frame cavity height as described in ISO15099 standard
+          const double T1, //!< Temperature of surface 1
+          const double T2, //!< Temperature of surface 2
+          Gases::CGas & gas, //!< Cavity gas fill
+          const double length //!< Length in the direction of heat flow (set up by child class)
+          );
 
         virtual double value() const = 0;
 
     protected:
+        double RaCalc(double dT, double Tavg, double length, Gases::CGas & gas);
         const double ratio;
         const double dT;
         const double Tavg;

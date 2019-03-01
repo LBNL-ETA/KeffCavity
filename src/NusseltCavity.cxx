@@ -8,21 +8,26 @@ namespace KeffCavity
     //////////////////////////////////////////////////////////////////////
 
     INusselt::INusselt(
-      const double L, const double H, const double T1, const double T2, Gases::CGas & gasC) :
+      const double L, const double H, const double T1, const double T2, Gases::CGas & gasC, const double length) :
         ratio(L / H),
         dT(std::abs(T1 - T2)),
         Tavg((T1 + T2) * 0.5),
         gas(gasC.getGasProperties()),
-        Ra(9.81 * gas.m_Density * gas.m_Density * gas.m_SpecificHeat * dT * L * L * L
-           / (Tavg * gas.m_Viscosity * gas.m_ThermalConductivity))
+        Ra(RaCalc(dT, Tavg, length, gasC))
     {}
+
+    double INusselt::RaCalc(double dT, double Tavg, double length, Gases::CGas &gasC){
+        auto gas = gasC.getGasProperties();
+        return 9.81 * gas.m_Density * gas.m_Density * gas.m_SpecificHeat * dT * length * length * length
+               / (Tavg * gas.m_Viscosity * gas.m_ThermalConductivity);
+    }
 
     //////////////////////////////////////////////////////////////////////
     //// NusseltISO15099Downward
     //////////////////////////////////////////////////////////////////////
     NusseltISO15099Downward::NusseltISO15099Downward(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
-        INusselt(L, H, T1, T2, gas)
+        INusselt(L, H, T1, T2, gas, H)
     {}
 
     double NusseltISO15099Downward::value() const
@@ -35,7 +40,7 @@ namespace KeffCavity
     //////////////////////////////////////////////////////////////////////
     NusseltISO15099Upward::NusseltISO15099Upward(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
-        INusselt(L, H, T1, T2, gas)
+        INusselt(L, H, T1, T2, gas, H)
     {}
 
     double NusseltISO15099Upward::value() const
@@ -71,7 +76,7 @@ namespace KeffCavity
     //////////////////////////////////////////////////////////////////////
     NusseltISO15099Horizontal::NusseltISO15099Horizontal(
       const double L, const double H, const double T1, const double T2, Gases::CGas & gas) :
-        INusselt(L, H, T1, T2, gas)
+        INusselt(L, H, T1, T2, gas, L)
     {}
 
     double NusseltISO15099Horizontal::value() const

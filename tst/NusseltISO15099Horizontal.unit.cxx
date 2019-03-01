@@ -60,3 +60,54 @@ TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioInLinearInterpo
 
     EXPECT_NEAR(Nu, 26.605523, 1e-6);
 }
+
+TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioLessThanHalf_ThermExample)
+{
+    Gases::CGas gas;
+    const double L = 0.2756;
+    const double H = 0.0703;
+    const double T1 = 271.665;
+    const double T2 = 275.531;
+    const double pressure = 101325;
+    gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Horizontal>(
+            new KeffCavity::NusseltISO15099Horizontal(L, H, T1, T2, gas));
+
+    const double Nu = nu->value();
+
+    EXPECT_NEAR(Nu, 21.772090, 1e-6);
+}
+
+TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioGreaterThanFive_ThermExample)
+{
+    Gases::CGas gas;
+    const double L = 0.0161;
+    const double H = 0.1932;
+    const double T1 = 272.562;
+    const double T2 = 276.106;
+    const double pressure = 101325;
+    gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Horizontal>(
+            new KeffCavity::NusseltISO15099Horizontal(L, H, T1, T2, gas));
+
+    const double Nu = nu->value();
+
+    EXPECT_NEAR(Nu, 1.001952, 1e-6);
+}
+
+TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioInLinearInterpolation_Therm)
+{
+    Gases::CGas gas;
+    const double L = 0.0756;
+    const double H = 0.0675;
+    const double T1 = 275.154;
+    const double T2 = 278.772;
+    const double pressure = 101325;
+    gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
+    std::unique_ptr<KeffCavity::INusselt> nu = std::unique_ptr<KeffCavity::NusseltISO15099Horizontal>(
+            new KeffCavity::NusseltISO15099Horizontal(L, H, T1, T2, gas));
+
+    const double Nu = nu->value();
+
+    EXPECT_NEAR(Nu, 6.609623, 1e-6);
+}
