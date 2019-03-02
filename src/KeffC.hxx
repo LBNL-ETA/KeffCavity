@@ -87,6 +87,10 @@ namespace KeffCavity
         //! Calculates cavity dimension in heat flow direction
         CavityFlowDimensions cavityFlowDimension();
 
+        CavityHeatFlow getCavityHeatFlow() const;
+
+        double keff(KeffStandard standard);
+
     private:
 
         enum class GravitySector
@@ -114,6 +118,8 @@ namespace KeffCavity
         GravityVector gravity;
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
+
+        double calcISO15099Nu();
     };
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +138,6 @@ namespace KeffCavity
         double effectiveConductivity();
 
     private:
-        //! Routine that calculates heat flow according to ISO15099 standard
-        double keffISO15099();
 
         CavityData cavity;
         KeffStandard standard;

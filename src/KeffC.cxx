@@ -1,4 +1,5 @@
 #include "KeffC.hxx"
+#include "NusseltCavity.hxx"
 
 namespace KeffCavity
 {
@@ -60,7 +61,8 @@ namespace KeffCavity
         return result;
     }
 
-    CavityHeatFlow CavityData::heatFlowDirection(ScreenFlow screenFlow, const GravityVector & gravity)
+    CavityHeatFlow CavityData::heatFlowDirection(ScreenFlow screenFlow,
+                                                 const GravityVector & gravity)
     {
         // Map that will convert screen and gravity flow into cavity flow
         std::map<std::pair<GravitySector, ScreenFlow>, CavityHeatFlow> convertFlow{
@@ -116,31 +118,31 @@ namespace KeffCavity
         }
 
         // Map that will convert screen and gravity flow into cavity flow as described in ISO 15099
-        std::map<std::pair<GravitySector, ScreenFlow>, DimensionAlgorithm > algorithm{
-                {{GravitySector::PositiveZ, ScreenFlow::Right}, DimensionAlgorithm::storeJambH},
-                {{GravitySector::PositiveZ, ScreenFlow::Left}, DimensionAlgorithm::storeJambH},
-                {{GravitySector::PositiveZ, ScreenFlow::Up}, DimensionAlgorithm::swapHLstoreJambH},
-                {{GravitySector::PositiveZ, ScreenFlow::Down}, DimensionAlgorithm::swapHLstoreJambH},
-                {{GravitySector::NegativeZ, ScreenFlow::Right}, DimensionAlgorithm::storeJambH},
-                {{GravitySector::NegativeZ, ScreenFlow::Left}, DimensionAlgorithm::storeJambH},
-                {{GravitySector::NegativeZ, ScreenFlow::Up}, DimensionAlgorithm::swapHLstoreJambH},
-                {{GravitySector::NegativeZ, ScreenFlow::Down}, DimensionAlgorithm::swapHLstoreJambH},
-                {{GravitySector::PositiveX, ScreenFlow::Right}, DimensionAlgorithm::swapHL},
-                {{GravitySector::PositiveX, ScreenFlow::Left}, DimensionAlgorithm::swapHL},
-                {{GravitySector::PositiveX, ScreenFlow::Up}, DimensionAlgorithm::swapHL},
-                {{GravitySector::PositiveX, ScreenFlow::Down}, DimensionAlgorithm::swapHL},
-                {{GravitySector::NegativeX, ScreenFlow::Right}, DimensionAlgorithm::swapHL},
-                {{GravitySector::NegativeX, ScreenFlow::Left}, DimensionAlgorithm::swapHL},
-                {{GravitySector::NegativeX, ScreenFlow::Up}, DimensionAlgorithm::swapHL},
-                {{GravitySector::NegativeX, ScreenFlow::Down}, DimensionAlgorithm::swapHL},
-                {{GravitySector::PositiveY, ScreenFlow::Right}, DimensionAlgorithm::None},
-                {{GravitySector::PositiveY, ScreenFlow::Left}, DimensionAlgorithm::None},
-                {{GravitySector::PositiveY, ScreenFlow::Up}, DimensionAlgorithm::None},
-                {{GravitySector::PositiveY, ScreenFlow::Down}, DimensionAlgorithm::None},
-                {{GravitySector::NegativeY, ScreenFlow::Right}, DimensionAlgorithm::None},
-                {{GravitySector::NegativeY, ScreenFlow::Left}, DimensionAlgorithm::None},
-                {{GravitySector::NegativeY, ScreenFlow::Up}, DimensionAlgorithm::None},
-                {{GravitySector::NegativeY, ScreenFlow::Down}, DimensionAlgorithm::None}};
+        std::map<std::pair<GravitySector, ScreenFlow>, DimensionAlgorithm> algorithm{
+          {{GravitySector::PositiveZ, ScreenFlow::Right}, DimensionAlgorithm::storeJambH},
+          {{GravitySector::PositiveZ, ScreenFlow::Left}, DimensionAlgorithm::storeJambH},
+          {{GravitySector::PositiveZ, ScreenFlow::Up}, DimensionAlgorithm::swapHLstoreJambH},
+          {{GravitySector::PositiveZ, ScreenFlow::Down}, DimensionAlgorithm::swapHLstoreJambH},
+          {{GravitySector::NegativeZ, ScreenFlow::Right}, DimensionAlgorithm::storeJambH},
+          {{GravitySector::NegativeZ, ScreenFlow::Left}, DimensionAlgorithm::storeJambH},
+          {{GravitySector::NegativeZ, ScreenFlow::Up}, DimensionAlgorithm::swapHLstoreJambH},
+          {{GravitySector::NegativeZ, ScreenFlow::Down}, DimensionAlgorithm::swapHLstoreJambH},
+          {{GravitySector::PositiveX, ScreenFlow::Right}, DimensionAlgorithm::swapHL},
+          {{GravitySector::PositiveX, ScreenFlow::Left}, DimensionAlgorithm::swapHL},
+          {{GravitySector::PositiveX, ScreenFlow::Up}, DimensionAlgorithm::swapHL},
+          {{GravitySector::PositiveX, ScreenFlow::Down}, DimensionAlgorithm::swapHL},
+          {{GravitySector::NegativeX, ScreenFlow::Right}, DimensionAlgorithm::swapHL},
+          {{GravitySector::NegativeX, ScreenFlow::Left}, DimensionAlgorithm::swapHL},
+          {{GravitySector::NegativeX, ScreenFlow::Up}, DimensionAlgorithm::swapHL},
+          {{GravitySector::NegativeX, ScreenFlow::Down}, DimensionAlgorithm::swapHL},
+          {{GravitySector::PositiveY, ScreenFlow::Right}, DimensionAlgorithm::None},
+          {{GravitySector::PositiveY, ScreenFlow::Left}, DimensionAlgorithm::None},
+          {{GravitySector::PositiveY, ScreenFlow::Up}, DimensionAlgorithm::None},
+          {{GravitySector::PositiveY, ScreenFlow::Down}, DimensionAlgorithm::None},
+          {{GravitySector::NegativeY, ScreenFlow::Right}, DimensionAlgorithm::None},
+          {{GravitySector::NegativeY, ScreenFlow::Left}, DimensionAlgorithm::None},
+          {{GravitySector::NegativeY, ScreenFlow::Up}, DimensionAlgorithm::None},
+          {{GravitySector::NegativeY, ScreenFlow::Down}, DimensionAlgorithm::None}};
 
         auto gapAlgorithm = algorithm.at({gravityDirection(gravity), screenFlow});
 
@@ -160,6 +162,41 @@ namespace KeffCavity
         return {L, H};
     }
 
+    CavityHeatFlow CavityData::getCavityHeatFlow() const
+    {
+        return cavityHeatFlow;
+    }
+
+    double CavityData::keff(KeffStandard standard)
+    {
+        double Nu{0};
+        switch(standard)
+        {
+            case KeffStandard::NFRC:
+                break;
+            case KeffStandard::CENISO:
+                break;
+            case KeffStandard::USERDIMENSION:
+                break;
+            case KeffStandard::ISO15099:
+                Nu = calcISO15099Nu();
+                break;
+        }
+        return Nu * gas.getGasProperties().m_ThermalConductivity;
+    }
+
+    double CavityData::calcISO15099Nu()
+    {
+        const auto flowDimension = cavityFlowDimension();
+        std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
+                                                                    flowDimension.L,
+                                                                    flowDimension.H,
+                                                                    side1.temperature,
+                                                                    side2.temperature,
+                                                                    gas)};
+        return nu->value();
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////
     /// KeffCavity
     //////////////////////////////////////////////////////////////////////////////////////
@@ -174,12 +211,8 @@ namespace KeffCavity
         radiationMethod(radiationMethod)
     {}
 
-    double KeffCavity::keffISO15099()
+    double KeffCavity::effectiveConductivity()
     {
-        return 0;
-    }
-
-    double KeffCavity::effectiveConductivity() {
-        return 0;
+        return cavity.keff(standard);
     }
 }   // namespace KeffCavity

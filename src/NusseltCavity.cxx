@@ -1,5 +1,7 @@
 #include <cmath>
+#include <functional>
 #include "NusseltCavity.hxx"
+#include "KeffC.hxx"
 
 namespace KeffCavity
 {
@@ -137,4 +139,22 @@ namespace KeffCavity
         return (y1 + (x - x1) * (y2 - y1) / (x2 - x1));
     }
 
+    std::unique_ptr<INusselt> NusseltISO15099Factory::create(const CavityHeatFlow cavityHeatFlow,
+                                                             const double L,
+                                                             const double H,
+                                                             const double T1,
+                                                             const double T2,
+                                                             Gases::CGas & gas)
+    {
+        switch(cavityHeatFlow)
+        {
+            case CavityHeatFlow::Horizontal:
+                return std::unique_ptr<NusseltISO15099Horizontal>(new NusseltISO15099Horizontal(L, H, T1, T2, gas));
+            case CavityHeatFlow::Upward:
+                return std::unique_ptr<NusseltISO15099Upward>(new NusseltISO15099Upward(L, H, T1, T2, gas));
+            case CavityHeatFlow::Downward:
+                return std::unique_ptr<NusseltISO15099Downward>(new NusseltISO15099Downward(L, H, T1, T2, gas));
+        }
+        return nullptr;
+    }
 }   // namespace KeffCavity
