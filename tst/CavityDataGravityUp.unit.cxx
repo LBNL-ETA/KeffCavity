@@ -1,7 +1,10 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
 #include <gtest/gtest.h>
 
 #include "KeffCavity.hxx"
 
+using KeffCavity::KeffStandard;
 using KeffCavity::CavityData;
 using KeffCavity::Ventilated;
 using KeffCavity::ScreenFlow;
@@ -10,6 +13,7 @@ using KeffCavity::CavitySide;
 class TestCavityDataGravityUp : public testing::Test
 {
 protected:
+    const KeffStandard standard{KeffStandard::ISO15099};
     const double maxXDimension{1.2};
     const double maxYDimension{0.8};
     const double jambHeight{1.5};
@@ -26,7 +30,8 @@ TEST_F(TestCavityDataGravityUp, TestCavityFlowLeft)
 {
     ScreenFlow flow{ScreenFlow::Left};
 
-    CavityData cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityData cavity(
+      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxXDimension);
@@ -37,7 +42,8 @@ TEST_F(TestCavityDataGravityUp, TestCavityFlowRight)
 {
     ScreenFlow flow{ScreenFlow::Right};
 
-    CavityData cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityData cavity(
+      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxXDimension);
@@ -48,7 +54,8 @@ TEST_F(TestCavityDataGravityUp, TestCavityFlowUpward)
 {
     ScreenFlow flow{ScreenFlow::Up};
 
-    CavityData cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityData cavity(
+      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxXDimension);
@@ -59,9 +66,11 @@ TEST_F(TestCavityDataGravityUp, TestCavityFlowDownward)
 {
     ScreenFlow flow{ScreenFlow::Down};
 
-    CavityData cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityData cavity(
+      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxXDimension);
     EXPECT_EQ(cavityFlow.H, maxYDimension);
 }
+#pragma clang diagnostic pop

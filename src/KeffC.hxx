@@ -38,15 +38,10 @@ namespace KeffCavity
         Down
     };
 
-    //! Flag to show whether or not to include radiation in cavity calculations.
-    enum class RadiationCalculation
-    {
-        No,
-        Yes
-    };
-
+    //! Flag to show which radiation methodology is used.
     enum class RadiationMethod
     {
+        NoRadiation,
         OriginalImplementation,
         ISO15099
     };
@@ -61,8 +56,8 @@ namespace KeffCavity
     //! Represents cavity dimension in the direction of heat flow
     struct CavityFlowDimensions
     {
-        double L; // Cavity length
-        double H; // Cavity height
+        double L;   // Cavity length
+        double H;   // Cavity height
     };
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +68,8 @@ namespace KeffCavity
     class CavityData
     {
     public:
-        CavityData(ScreenFlow screenFlow,
+        CavityData(KeffStandard keffStandard,
+                   ScreenFlow screenFlow,
                    double maxXDimension,
                    double maxYDimension,
                    double jambHeight,
@@ -82,16 +78,15 @@ namespace KeffCavity
                    const CavitySide & side2,
                    const GravityVector & gravity = {0.0, -1.0, 0.0},
                    Ventilated ventilated = Ventilated::NO,
-                   RadiationCalculation radiationCalculation = RadiationCalculation::Yes,
+                   RadiationMethod radiationMethod = RadiationMethod::ISO15099,
                    const Gases::CGas & gas = Gases::CGas());
 
         //! Calculates cavity dimension in heat flow direction.
         CavityFlowDimensions cavityFlowDimension();
 
-        double keff(KeffStandard standard);
+        double effectiveConductivity();
 
     private:
-
         enum class GravitySector
         {
             PositiveX,
@@ -106,6 +101,7 @@ namespace KeffCavity
         GravitySector gravityDirection(const GravityVector & gravity);
         CavityHeatFlow heatFlowDirection(ScreenFlow screenFlow, const GravityVector & gravity);
 
+        KeffStandard keffStandard;
         ScreenFlow screenFlow;
         double maxXDimension;
         double maxYDimension;
@@ -115,33 +111,10 @@ namespace KeffCavity
         CavitySide side2;
         GravityVector gravity;
         Ventilated ventilated;
-        RadiationCalculation radiationCalculation;
+        RadiationMethod radiationMethod;
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
 
         double calcISO15099Nu();
-    };
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    /// KeffCavity
-    //////////////////////////////////////////////////////////////////////////////////////
-
-    //! Class to calculate effective cavity conductivity
-    class KeffCavity
-    {
-    public:
-        KeffCavity(const CavityData & cavity,
-                   KeffStandard standard,
-                   RadiationCalculation radiationCalculation,
-                   RadiationMethod radiationMethod);
-
-        double effectiveConductivity();
-
-    private:
-
-        CavityData cavity;
-        KeffStandard standard;
-        RadiationCalculation radiationCalculation;
-        RadiationMethod radiationMethod;
     };
 }   // namespace KeffCavity
