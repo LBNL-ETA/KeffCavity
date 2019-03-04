@@ -7,8 +7,7 @@ namespace KeffCavity
     /// CavityData
     //////////////////////////////////////////////////////////////////////////////////////
 
-    CavityData::CavityData(Ventilated ventilated,
-                           ScreenFlow screenFlow,
+    CavityData::CavityData(ScreenFlow screenFlow,
                            double maxXDimension,
                            double maxYDimension,
                            double jambHeight,
@@ -16,8 +15,9 @@ namespace KeffCavity
                            const CavitySide & side1,
                            const CavitySide & side2,
                            const GravityVector & gravity,
+                           Ventilated ventilated,
+                           RadiationCalculation radiationCalculation,
                            const Gases::CGas & gas) :
-        ventilated(ventilated),
         screenFlow(screenFlow),
         maxXDimension(maxXDimension),
         maxYDimension(maxYDimension),
@@ -26,6 +26,8 @@ namespace KeffCavity
         side1(side1),
         side2(side2),
         gravity(gravity),
+        ventilated(ventilated),
+        radiationCalculation(radiationCalculation),
         gas(gas),
         cavityHeatFlow(heatFlowDirection(screenFlow, gravity))
     {}
@@ -65,7 +67,7 @@ namespace KeffCavity
                                                  const GravityVector & gravity)
     {
         // Map that will convert screen and gravity flow into cavity flow
-        std::map<std::pair<GravitySector, ScreenFlow>, CavityHeatFlow> convertFlow{
+        std::map<std::pair<GravitySector, ScreenFlow>, CavityHeatFlow> cavityHeatFlow{
           {{GravitySector::PositiveZ, ScreenFlow::Right}, CavityHeatFlow::Horizontal},
           {{GravitySector::PositiveZ, ScreenFlow::Left}, CavityHeatFlow::Horizontal},
           {{GravitySector::PositiveZ, ScreenFlow::Up}, CavityHeatFlow::Horizontal},
@@ -92,7 +94,7 @@ namespace KeffCavity
           {{GravitySector::NegativeY, ScreenFlow::Down}, CavityHeatFlow::Downward}};
         const auto gDirection = gravityDirection(gravity);
 
-        return convertFlow.at({gDirection, screenFlow});
+        return cavityHeatFlow.at({gDirection, screenFlow});
     }
 
     CavityFlowDimensions CavityData::cavityFlowDimension()
@@ -160,11 +162,6 @@ namespace KeffCavity
             H = jambHeight;
         }
         return {L, H};
-    }
-
-    CavityHeatFlow CavityData::getCavityHeatFlow() const
-    {
-        return cavityHeatFlow;
     }
 
     double CavityData::keff(KeffStandard standard)

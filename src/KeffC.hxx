@@ -73,8 +73,7 @@ namespace KeffCavity
     class CavityData
     {
     public:
-        CavityData(Ventilated ventilated,
-                   ScreenFlow screenFlow,
+        CavityData(ScreenFlow screenFlow,
                    double maxXDimension,
                    double maxYDimension,
                    double jambHeight,
@@ -82,12 +81,12 @@ namespace KeffCavity
                    const CavitySide & side1,
                    const CavitySide & side2,
                    const GravityVector & gravity = {0.0, -1.0, 0.0},
+                   Ventilated ventilated = Ventilated::NO,
+                   RadiationCalculation radiationCalculation = RadiationCalculation::Yes,
                    const Gases::CGas & gas = Gases::CGas());
 
-        //! Calculates cavity dimension in heat flow direction
+        //! Calculates cavity dimension in heat flow direction.
         CavityFlowDimensions cavityFlowDimension();
-
-        CavityHeatFlow getCavityHeatFlow() const;
 
         double keff(KeffStandard standard);
 
@@ -107,7 +106,6 @@ namespace KeffCavity
         GravitySector gravityDirection(const GravityVector & gravity);
         CavityHeatFlow heatFlowDirection(ScreenFlow screenFlow, const GravityVector & gravity);
 
-        Ventilated ventilated;
         ScreenFlow screenFlow;
         double maxXDimension;
         double maxYDimension;
@@ -116,6 +114,8 @@ namespace KeffCavity
         CavitySide side1;
         CavitySide side2;
         GravityVector gravity;
+        Ventilated ventilated;
+        RadiationCalculation radiationCalculation;
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
 

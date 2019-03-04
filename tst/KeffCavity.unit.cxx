@@ -10,7 +10,7 @@ protected:
     {}
 };
 
-TEST_F(TestKeffCavity, Test1)
+TEST_F(TestKeffCavity, TestHorizontal)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.2246;
@@ -24,8 +24,7 @@ TEST_F(TestKeffCavity, Test1)
     const GravityVector g{0, - 1, 0};
     const double pressure = 101325;
     gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
-    KeffCavity::CavityData cavData(KeffCavity::Ventilated::NO,
-                                   KeffCavity::ScreenFlow::Right,
+    KeffCavity::CavityData cavData(KeffCavity::ScreenFlow::Right,
                                    MaxXDimension,
                                    MaxYDimension,
                                    JambHeight,
