@@ -27,18 +27,18 @@ TEST_F(TestKeffCavity, TestHorizontal)
     const GravityVector g{0, -1, 0};
     const double pressure = 101325;
     gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
-    KeffCavity::CavityData cavity(standard,
-                                  KeffCavity::ScreenFlow::Right,
-                                  MaxXDimension,
-                                  MaxYDimension,
-                                  JambHeight,
-                                  area,
-                                  {T1, e1},
-                                  {T2, e2},
-                                  g);
+    KeffCavity::Cavity cavity(standard,
+                              KeffCavity::ScreenFlow::Right,
+                              MaxXDimension,
+                              MaxYDimension,
+                              JambHeight,
+                              area,
+                              {T1, e1},
+                              {T2, e2},
+                              g);
 
     const double keff = cavity.effectiveConductivity();
 
-    EXPECT_NEAR(keff, 0.429901, 1e-6);
+    EXPECT_NEAR(keff, 0.961007, 1e-6);
 }
 #pragma clang diagnostic pop

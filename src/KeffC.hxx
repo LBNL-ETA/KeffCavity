@@ -61,14 +61,14 @@ namespace KeffCavity
     };
 
     //////////////////////////////////////////////////////////////////////////////////////
-    /// CavityData
+    /// Cavity
     //////////////////////////////////////////////////////////////////////////////////////
 
     //! Class that holds necessary cavity data used in effective conductivity calculations
-    class CavityData
+    class Cavity
     {
     public:
-        CavityData(KeffStandard keffStandard,
+        Cavity(KeffStandard keffStandard,
                    ScreenFlow screenFlow,
                    double maxXDimension,
                    double maxYDimension,
@@ -82,7 +82,7 @@ namespace KeffCavity
                    const Gases::CGas & gas = Gases::CGas());
 
         //! Calculates cavity dimension in heat flow direction.
-        CavityFlowDimensions cavityFlowDimension();
+        CavityFlowDimensions cavityFlowDimension() const;
 
         double effectiveConductivity();
 
@@ -98,8 +98,14 @@ namespace KeffCavity
         };
 
         //! Calculates sector in which gravity vector is pointing out.
-        GravitySector gravityDirection(const GravityVector & gravity);
+        GravitySector gravityDirection(const GravityVector & gravity) const;
         CavityHeatFlow heatFlowDirection(ScreenFlow screenFlow, const GravityVector & gravity);
+
+        //! Calculates thickness of cavity in the direction of heat flow
+        double calcThicknessInHeatFlowDirection(ScreenFlow screenFlow) const;
+
+        //! Calcualtion of radiation according to ISO15099 standard
+        double radKeffISO15099() const;
 
         KeffStandard keffStandard;
         ScreenFlow screenFlow;
@@ -114,6 +120,7 @@ namespace KeffCavity
         RadiationMethod radiationMethod;
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
+        double thicknessInHeatFlowDirection;
 
         double calcISO15099Nu();
     };

@@ -1,13 +1,14 @@
+#include <cmath>
 #include "KeffC.hxx"
 #include "NusseltCavity.hxx"
 
 namespace KeffCavity
 {
     //////////////////////////////////////////////////////////////////////////////////////
-    /// CavityData
+    /// Cavity
     //////////////////////////////////////////////////////////////////////////////////////
 
-    CavityData::CavityData(KeffStandard keffStandard,
+    Cavity::Cavity(KeffStandard keffStandard,
                            ScreenFlow screenFlow,
                            double maxXDimension,
                            double maxYDimension,
@@ -31,10 +32,11 @@ namespace KeffCavity
         ventilated(ventilated),
         radiationMethod(radiationMethod),
         gas(gas),
-        cavityHeatFlow(heatFlowDirection(screenFlow, gravity))
+        cavityHeatFlow(heatFlowDirection(screenFlow, gravity)),
+        thicknessInHeatFlowDirection(calcThicknessInHeatFlowDirection(screenFlow))
     {}
 
-    CavityData::GravitySector CavityData::gravityDirection(const GravityVector & gravity)
+    Cavity::GravitySector Cavity::gravityDirection(const GravityVector & gravity) const
     {
         GravitySector result{GravitySector::NegativeY};
         if((gravity.x <= gravity.z) && (gravity.x >= -gravity.z) && (gravity.y <= gravity.z)
@@ -65,7 +67,7 @@ namespace KeffCavity
         return result;
     }
 
-    CavityHeatFlow CavityData::heatFlowDirection(ScreenFlow screenFlow,
+    CavityHeatFlow Cavity::heatFlowDirection(ScreenFlow screenFlow,
                                                  const GravityVector & gravity)
     {
         // Map that will convert screen and gravity flow into cavity flow
@@ -99,7 +101,7 @@ namespace KeffCavity
         return cavityHeatFlow.at({gDirection, screenFlow});
     }
 
-    CavityFlowDimensions CavityData::cavityFlowDimension()
+    CavityFlowDimensions Cavity::cavityFlowDimension() const
     {
         enum class DimensionAlgorithm
         {
@@ -166,8 +168,20 @@ namespace KeffCavity
         return {L, H};
     }
 
-    double CavityData::effectiveConductivity()
+    double Cavity::calcThicknessInHeatFlowDirection(ScreenFlow screenFlow) const {
+        auto result{maxXDimension};
+
+        if(screenFlow == ScreenFlow::Up || screenFlow == ScreenFlow::Down)
+        {
+            result = maxYDimension;
+        }
+
+        return result;
+    }
+
+    double Cavity::effectiveConductivity()
     {
+        double Keff{0};
         double Nu{0};
         switch(keffStandard)
         {
@@ -181,10 +195,19 @@ namespace KeffCavity
                 Nu = calcISO15099Nu();
                 break;
         }
-        return Nu * gas.getGasProperties().m_ThermalConductivity;
+        Keff = Nu * gas.getGasProperties().m_ThermalConductivity;
+        switch (radiationMethod)
+        {
+            case RadiationMethod::NoRadiation:break;
+            case RadiationMethod::OriginalImplementation:break;
+            case RadiationMethod::ISO15099:
+                Keff+= radKeffISO15099();
+                break;
+        }
+        return Keff;
     }
 
-    double CavityData::calcISO15099Nu()
+    double Cavity::calcISO15099Nu()
     {
         const auto flowDimension = cavityFlowDimension();
         std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
@@ -194,5 +217,16 @@ namespace KeffCavity
                                                                     side2.temperature,
                                                                     gas)};
         return nu->value();
+    }
+
+    double Cavity::radKeffISO15099() const {
+        const auto e1 = std::max(side1.emissivity, 0.001);
+        const auto e2 = std::max(side2.emissivity, 0.001);
+        const auto Tavg = (side1.temperature + side2.temperature) * 0.5;
+        const auto cavityFlowD = cavityFlowDimension();
+        const auto ratio = cavityFlowD.L / cavityFlowD.H;
+        const auto hr = 4 * 5.67e-8 * Tavg * Tavg * Tavg
+             / (1.0 / e1 + 1.0 / e2 - 2.0 + 1.0 / (0.5 * (std::pow(1.0 + std::pow(ratio, 2.0), 0.5) - ratio + 1.0)));
+        return hr * thicknessInHeatFlowDirection;
     }
 }   // namespace KeffCavity

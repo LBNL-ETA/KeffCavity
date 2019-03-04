@@ -5,7 +5,7 @@
 #include "KeffCavity.hxx"
 
 using KeffCavity::KeffStandard;
-using KeffCavity::CavityData;
+using KeffCavity::Cavity;
 using KeffCavity::Ventilated;
 using KeffCavity::ScreenFlow;
 using KeffCavity::CavitySide;
@@ -30,7 +30,7 @@ TEST_F(CavityDataGravityOutOfScreen, TestCavityFlowLeft)
 {
     ScreenFlow flow{ScreenFlow::Left};
 
-    CavityData cavity(
+    Cavity cavity(
       standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
@@ -42,7 +42,7 @@ TEST_F(CavityDataGravityOutOfScreen, TestCavityFlowRight)
 {
     ScreenFlow flow{ScreenFlow::Right};
 
-    CavityData cavity(
+    Cavity cavity(
       standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
@@ -54,7 +54,7 @@ TEST_F(CavityDataGravityOutOfScreen, TestCavityFlowUpward)
 {
     ScreenFlow flow{ScreenFlow::Up};
 
-    CavityData cavity(
+    Cavity cavity(
       standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
@@ -66,7 +66,7 @@ TEST_F(CavityDataGravityOutOfScreen, TestCavityFlowDownward)
 {
     ScreenFlow flow{ScreenFlow::Down};
 
-    CavityData cavity(
+    Cavity cavity(
       standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
