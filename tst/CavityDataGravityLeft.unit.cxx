@@ -3,9 +3,8 @@
 #include <gtest/gtest.h>
 
 #include "KeffCavity.hxx"
+#include "Mocks.hxx"
 
-using KeffCavity::KeffStandard;
-using KeffCavity::Cavity;
 using KeffCavity::Ventilated;
 using KeffCavity::ScreenFlow;
 using KeffCavity::CavitySide;
@@ -13,7 +12,6 @@ using KeffCavity::CavitySide;
 class TestCavityDataGravityLeft : public testing::Test
 {
 protected:
-    const KeffStandard standard{KeffStandard::ISO15099};
     const double maxXDimension{1.2};
     const double maxYDimension{0.8};
     const double jambHeight{1.5};
@@ -30,8 +28,7 @@ TEST_F(TestCavityDataGravityLeft, TestCavityFlowLeft)
 {
     ScreenFlow flow{ScreenFlow::Left};
 
-    Cavity cavity(
-      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityTest cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);
@@ -42,8 +39,7 @@ TEST_F(TestCavityDataGravityLeft, TestCavityFlowRight)
 {
     ScreenFlow flow{ScreenFlow::Right};
 
-    Cavity cavity(
-      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityTest cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);
@@ -54,8 +50,7 @@ TEST_F(TestCavityDataGravityLeft, TestCavityFlowUpward)
 {
     ScreenFlow flow{ScreenFlow::Up};
 
-    Cavity cavity(
-      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityTest cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);
@@ -66,8 +61,7 @@ TEST_F(TestCavityDataGravityLeft, TestCavityFlowDownward)
 {
     ScreenFlow flow{ScreenFlow::Down};
 
-    Cavity cavity(
-      standard, flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
+    CavityTest cavity(flow, maxXDimension, maxYDimension, jambHeight, area, side1, side2, gravity);
 
     auto cavityFlow = cavity.cavityFlowDimension();
     EXPECT_EQ(cavityFlow.L, maxYDimension);

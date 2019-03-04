@@ -15,7 +15,6 @@ protected:
 TEST_F(TestKeffCavity, TestHorizontal)
 {
     Gases::CGas gas;
-    const KeffCavity::KeffStandard standard{KeffCavity::KeffStandard::ISO15099};
     const double MaxXDimension = 0.2246;
     const double MaxYDimension = 0.0756;
     const double JambHeight = 1;
@@ -27,15 +26,15 @@ TEST_F(TestKeffCavity, TestHorizontal)
     const GravityVector g{0, -1, 0};
     const double pressure = 101325;
     gas.setTemperatureAndPressure((T1 + T2) * 0.5, pressure);
-    KeffCavity::Cavity cavity(standard,
-                              KeffCavity::ScreenFlow::Right,
-                              MaxXDimension,
-                              MaxYDimension,
-                              JambHeight,
-                              area,
-                              {T1, e1},
-                              {T2, e2},
-                              g);
+    KeffCavity::CavityISO10599 cavity(
+            KeffCavity::ScreenFlow::Right,
+            MaxXDimension,
+            MaxYDimension,
+            JambHeight,
+            area,
+            {T1, e1},
+            {T2, e2},
+            g);
 
     const double keff = cavity.effectiveConductivity();
 

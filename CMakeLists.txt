@@ -71,7 +71,7 @@ if( BUILD_KeffC_TESTING )
   	include_directories(src)
 	include_directories(include)
   	
-  	file( GLOB all_test_src RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "tst/*.cxx" )
+  	file( GLOB all_test_src RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "tst/*.cxx" "tst/*.hxx" )
     LIST( APPEND test_src ${all_test_src} )
     
     CREATE_TEST_TARGETS_KeffC( ${target_name} "${test_src}" "" )
