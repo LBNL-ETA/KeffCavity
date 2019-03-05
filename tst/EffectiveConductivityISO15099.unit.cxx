@@ -74,6 +74,39 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     EXPECT_NEAR(keff, 0.314463, 1e-6);
 }
 
+TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenStandardRatioVentilated)
+{
+    Gases::CGas gas;
+    const double MaxXDimension = 0.0756;
+    const double MaxYDimension = 0.0675;
+    const double JambHeight = 1;
+    const double area = 2;
+    const double T1 = 274.8213;
+    const double e1 = 0.9;
+    const double T2 = 279.0344;
+    const double e2 = 0.9;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const GravityVector g{0, 0, -1};
+    const double pressure = 101325;
+    const KeffCavity::Ventilated ventilated = KeffCavity::Ventilated::Yes;
+    KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
+                                      MaxXDimension,
+                                      MaxYDimension,
+                                      JambHeight,
+                                      area,
+                                      {T1, e1},
+                                      {T2, e2},
+                                      pressure,
+                                      g,
+                                      radCal,
+                                      gas,
+                                      ventilated);
+
+    const double keff = cavity.effectiveConductivity();
+
+    EXPECT_NEAR(keff, 0.628926, 1e-6);
+}
+
 TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRatioLessThanHalf)
 {
     Gases::CGas gas;

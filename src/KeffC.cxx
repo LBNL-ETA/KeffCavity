@@ -221,13 +221,19 @@ namespace KeffCavity
     double CavityISO10599::calcNu()
     {
         const auto flowDimension = cavityFlowDimension();
-        std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
+        std::unique_ptr<INusselt> nuCav{NusseltISO15099Factory::create(cavityHeatFlow,
                                                                     flowDimension.L,
                                                                     flowDimension.H,
                                                                     side1.temperature,
                                                                     side2.temperature,
                                                                     gas)};
-        return nu->value();
+        auto nu = nuCav->value();
+        if(ventilated == Ventilated::Yes)
+        {
+            nu *= 2;
+        }
+
+        return nu;
     }
 
     double CavityISO10599::radKeff() const
@@ -244,6 +250,11 @@ namespace KeffCavity
           4 * 5.67e-8 * Tavg * Tavg * Tavg
           / (1.0 / e1 + 1.0 / e2 - 2.0
              + 1.0 / (0.5 * (std::pow(1.0 + std::pow(ratio, 2.0), 0.5) - ratio + 1.0)));
-        return hr * thicknessInHeatFlowDirection;
+        auto keff = hr * thicknessInHeatFlowDirection;
+        if(ventilated == Ventilated::Yes)
+        {
+            keff *= 2;
+        }
+        return keff;
     }
 }   // namespace KeffCavity
