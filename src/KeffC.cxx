@@ -22,7 +22,6 @@ namespace KeffCavity
         maxXDimension(maxXDimension),
         maxYDimension(maxYDimension),
         jambHeight(jambHeight),
-        area(area),
         side1(side1),
         side2(side2),
         gravity(gravity),
@@ -218,19 +217,13 @@ namespace KeffCavity
     double CavityISO10599::calcNu()
     {
         const auto flowDimension = cavityFlowDimension();
-        std::unique_ptr<INusselt> nuCav{NusseltISO15099Factory::create(cavityHeatFlow,
+        std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
                                                                        flowDimension.L,
                                                                        flowDimension.H,
                                                                        side1.temperature,
                                                                        side2.temperature,
                                                                        gas)};
-        auto nu = nuCav->value();
-        if(ventilated == Ventilated::Yes)
-        {
-            nu *= 2;
-        }
-
-        return nu;
+        return nu->value();
     }
 
     double CavityISO10599::radKeff() const
@@ -257,6 +250,11 @@ namespace KeffCavity
 
     double CavityISO10599::convKeff()
     {
-        return calcNu() * gas.getGasProperties().m_ThermalConductivity;
+        auto keff = calcNu() * gas.getGasProperties().m_ThermalConductivity;
+        if(ventilated == Ventilated::Yes)
+        {
+            keff *= 2;
+        }
+        return keff;
     }
 }   // namespace KeffCavity

@@ -102,7 +102,6 @@ namespace KeffCavity
         double maxXDimension;
         double maxYDimension;
         double jambHeight;
-        double area;
         CavitySide side1;
         CavitySide side2;
         GravityVector gravity;
