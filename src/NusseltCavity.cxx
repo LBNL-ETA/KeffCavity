@@ -99,9 +99,9 @@ namespace KeffCavity
         }
         if(ratio >= 1.0 / 5.0 && ratio <= 2.0)
         {
-            const auto lowPoint = 1.0 / 5.0;
+            const auto lowPoint = 0.2;
             const auto highPoint = 2.0;
-            Nu = LinearInterp(ratio, lowPoint, Nu1(lowPoint), highPoint, Nu2(highPoint));
+            Nu = LinearInterp(ratio, lowPoint, Nu2(lowPoint), highPoint, Nu1(highPoint));
         }
         return Nu;
     }
@@ -155,6 +155,7 @@ namespace KeffCavity
             case CavityHeatFlow::Downward:
                 return std::unique_ptr<NusseltISO15099Downward>(new NusseltISO15099Downward(L, H, T1, T2, gas));
         }
+
         return nullptr;
     }
 }   // namespace KeffCavity

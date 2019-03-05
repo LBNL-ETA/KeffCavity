@@ -65,6 +65,7 @@ namespace KeffCavity
                double area,
                const CavitySide & side1,
                const CavitySide & side2,
+               double pressure = 101325,
                const GravityVector & gravity = {0.0, -1.0, 0.0},
                RadiationCalculation radiationMethod = RadiationCalculation::Yes,
                const Gases::CGas & gas = Gases::CGas());
@@ -121,7 +122,8 @@ namespace KeffCavity
                        double area,
                        const CavitySide & side1,
                        const CavitySide & side2,
-                       const GravityVector & gravity,
+                       double pressure = 101325,
+                       const GravityVector & gravity = {0.0, -1.0, 0.0},
                        RadiationCalculation radiationCalculation = RadiationCalculation::Yes,
                        const Gases::CGas & gas = Gases::CGas(),
                        Ventilated ventilated = Ventilated::No);

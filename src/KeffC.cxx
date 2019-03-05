@@ -8,16 +8,17 @@ namespace KeffCavity
     /// Cavity
     //////////////////////////////////////////////////////////////////////////////////////
 
-    Cavity::Cavity(ScreenFlow screenFlow,
-                   double maxXDimension,
-                   double maxYDimension,
-                   double jambHeight,
-                   double area,
+    Cavity::Cavity(const ScreenFlow screenFlow,
+                   const double maxXDimension,
+                   const double maxYDimension,
+                   const double jambHeight,
+                   const double area,
                    const CavitySide & side1,
                    const CavitySide & side2,
+                   const double pressure,
                    const GravityVector & gravity,
-                   RadiationCalculation radiationMethod,
-                   const Gases::CGas & gas) :
+                   const RadiationCalculation radiationMethod,
+                   const Gases::CGas & gasC) :
         screenFlow(screenFlow),
         maxXDimension(maxXDimension),
         maxYDimension(maxYDimension),
@@ -27,10 +28,12 @@ namespace KeffCavity
         side2(side2),
         gravity(gravity),
         radiationMethod(radiationMethod),
-        gas(gas),
+        gas(gasC),
         cavityHeatFlow(heatFlowDirection(screenFlow, gravity)),
         thicknessInHeatFlowDirection(calcThicknessInHeatFlowDirection(screenFlow))
-    {}
+    {
+        gas.setTemperatureAndPressure(0.5 * (side1.temperature + side2.temperature), pressure);
+    }
 
     Cavity::GravitySector Cavity::gravityDirection(const GravityVector & gravity) const
     {
@@ -189,17 +192,18 @@ namespace KeffCavity
     /// CavityISO10599
     //////////////////////////////////////////////////////////////////////////////////////
 
-    CavityISO10599::CavityISO10599(ScreenFlow screenFlow,
-                                   double maxXDimension,
-                                   double maxYDimension,
-                                   double jambHeight,
-                                   double area,
+    CavityISO10599::CavityISO10599(const ScreenFlow screenFlow,
+                                   const double maxXDimension,
+                                   const double maxYDimension,
+                                   const double jambHeight,
+                                   const double area,
                                    const CavitySide & side1,
                                    const CavitySide & side2,
+                                   const double pressure,
                                    const GravityVector & gravity,
-                                   RadiationCalculation radiationCalculation,
+                                   const RadiationCalculation radiationCalculation,
                                    const Gases::CGas & gas,
-                                   Ventilated ventilated) :
+                                   const Ventilated ventilated) :
         Cavity(screenFlow,
                maxXDimension,
                maxYDimension,
@@ -207,6 +211,7 @@ namespace KeffCavity
                area,
                side1,
                side2,
+               pressure,
                gravity,
                radiationCalculation,
                gas),
@@ -230,8 +235,11 @@ namespace KeffCavity
         const auto e1 = std::max(side1.emissivity, 0.001);
         const auto e2 = std::max(side2.emissivity, 0.001);
         const auto Tavg = (side1.temperature + side2.temperature) * 0.5;
-        const auto cavityFlowD = cavityFlowDimension();
-        const auto ratio = cavityFlowD.L / cavityFlowD.H;
+        auto ratio = maxXDimension / maxYDimension;
+        if(cavityHeatFlow == CavityHeatFlow::Downward || cavityHeatFlow == CavityHeatFlow::Upward)
+        {
+            ratio = 1 / ratio;
+        }
         const auto hr =
           4 * 5.67e-8 * Tavg * Tavg * Tavg
           / (1.0 / e1 + 1.0 / e2 - 2.0
