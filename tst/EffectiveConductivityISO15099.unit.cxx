@@ -18,7 +18,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityNegativeYStan
     const double MaxXDimension = 0.0756;
     const double MaxYDimension = 0.0675;
     const double JambHeight = 1;
-    const double area = 2;
     const double T1 = 275.1543;
     const double e1 = 0.9;
     const double T2 = 278.7715;
@@ -30,7 +29,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityNegativeYStan
                                       MaxXDimension,
                                       MaxYDimension,
                                       JambHeight,
-                                      area,
                                       {T1, e1},
                                       {T2, e2},
                                       pressure,
@@ -49,7 +47,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double MaxXDimension = 0.0756;
     const double MaxYDimension = 0.0675;
     const double JambHeight = 1;
-    const double area = 2;
     const double T1 = 274.8213;
     const double e1 = 0.9;
     const double T2 = 279.0344;
@@ -61,7 +58,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
                                       MaxXDimension,
                                       MaxYDimension,
                                       JambHeight,
-                                      area,
                                       {T1, e1},
                                       {T2, e2},
                                       pressure,
@@ -80,7 +76,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double MaxXDimension = 0.0756;
     const double MaxYDimension = 0.0675;
     const double JambHeight = 1;
-    const double area = 2;
     const double T1 = 274.8213;
     const double e1 = 0.9;
     const double T2 = 279.0344;
@@ -93,7 +88,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
                                       MaxXDimension,
                                       MaxYDimension,
                                       JambHeight,
-                                      area,
                                       {T1, e1},
                                       {T2, e2},
                                       pressure,
@@ -113,7 +107,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double MaxXDimension = 0.2756;
     const double MaxYDimension = 0.0703;
     const double JambHeight = 1;
-    const double area = 2;
     const double T1 = 271.4768;
     const double e1 = 0.9;
     const double T2 = 275.7409;
@@ -125,7 +118,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
                                       MaxXDimension,
                                       MaxYDimension,
                                       JambHeight,
-                                      area,
                                       {T1, e1},
                                       {T2, e2},
                                       pressure,
@@ -144,7 +136,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double MaxXDimension = 0.0161;
     const double MaxYDimension = 0.1932;
     const double JambHeight = 1;
-    const double area = 2;
     const double T1 = 272.5621;
     const double e1 = 0.9;
     const double T2 = 276.1058;
@@ -156,7 +147,6 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
                                       MaxXDimension,
                                       MaxYDimension,
                                       JambHeight,
-                                      area,
                                       {T1, e1},
                                       {T2, e2},
                                       pressure,

@@ -8,16 +8,15 @@ namespace KeffCavity
     /// Cavity
     //////////////////////////////////////////////////////////////////////////////////////
 
-    Cavity::Cavity(const ScreenFlow screenFlow,
-                   const double maxXDimension,
-                   const double maxYDimension,
-                   const double jambHeight,
-                   const double area,
+    Cavity::Cavity(ScreenFlow screenFlow,
+                   double maxXDimension,
+                   double maxYDimension,
+                   double jambHeight,
                    const CavitySide & side1,
                    const CavitySide & side2,
-                   const double pressure,
+                   double pressure,
                    const GravityVector & gravity,
-                   const RadiationCalculation radiationMethod,
+                   RadiationCalculation radiationMethod,
                    const Gases::CGas & gasC) :
         screenFlow(screenFlow),
         maxXDimension(maxXDimension),
@@ -192,23 +191,21 @@ namespace KeffCavity
     /// CavityISO10599
     //////////////////////////////////////////////////////////////////////////////////////
 
-    CavityISO10599::CavityISO10599(const ScreenFlow screenFlow,
-                                   const double maxXDimension,
-                                   const double maxYDimension,
-                                   const double jambHeight,
-                                   const double area,
+    CavityISO10599::CavityISO10599(ScreenFlow screenFlow,
+                                   double maxXDimension,
+                                   double maxYDimension,
+                                   double jambHeight,
                                    const CavitySide & side1,
                                    const CavitySide & side2,
-                                   const double pressure,
+                                   double pressure,
                                    const GravityVector & gravity,
-                                   const RadiationCalculation radiationCalculation,
+                                   RadiationCalculation radiationCalculation,
                                    const Gases::CGas & gas,
-                                   const Ventilated ventilated) :
+                                   Ventilated ventilated) :
         Cavity(screenFlow,
                maxXDimension,
                maxYDimension,
                jambHeight,
-               area,
                side1,
                side2,
                pressure,
@@ -222,11 +219,11 @@ namespace KeffCavity
     {
         const auto flowDimension = cavityFlowDimension();
         std::unique_ptr<INusselt> nuCav{NusseltISO15099Factory::create(cavityHeatFlow,
-                                                                    flowDimension.L,
-                                                                    flowDimension.H,
-                                                                    side1.temperature,
-                                                                    side2.temperature,
-                                                                    gas)};
+                                                                       flowDimension.L,
+                                                                       flowDimension.H,
+                                                                       side1.temperature,
+                                                                       side2.temperature,
+                                                                       gas)};
         auto nu = nuCav->value();
         if(ventilated == Ventilated::Yes)
         {

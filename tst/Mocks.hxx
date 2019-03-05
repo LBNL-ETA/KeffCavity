@@ -14,17 +14,16 @@ public:
       const GravityVector & gravity,
       KeffCavity::RadiationCalculation radiationMethod = KeffCavity::RadiationCalculation::Yes,
       const Gases::CGas & gas = Gases::CGas()) :
-        Cavity(screenFlow,
-               maxXDimension,
-               maxYDimension,
-               jambHeight,
-               area,
-               side1,
-               side2,
-               101325,
-               gravity,
-               radiationMethod,
-               gas)
+            Cavity(screenFlow,
+                   maxXDimension,
+                   maxYDimension,
+                   jambHeight,
+                   side1,
+                   side2,
+                   101325,
+                   gravity,
+                   radiationMethod,
+                   gas)
     {}
 
 protected:
