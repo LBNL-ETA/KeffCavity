@@ -8,7 +8,6 @@ public:
       double maxXDimension,
       double maxYDimension,
       double jambHeight,
-      double area,
       const KeffCavity::CavitySide & side1,
       const KeffCavity::CavitySide & side2,
       const GravityVector & gravity,
@@ -31,7 +30,7 @@ protected:
         return 0;
     }
 
-    double calcNu() override {
+    double convKeff() override {
         return 0;
     }
 };

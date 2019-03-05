@@ -179,7 +179,7 @@ namespace KeffCavity
 
     double Cavity::effectiveConductivity()
     {
-        auto Keff = calcNu() * gas.getGasProperties().m_ThermalConductivity;
+        auto Keff = convKeff();
         if(radiationMethod == RadiationCalculation::Yes)
         {
             Keff += radKeff();
@@ -253,5 +253,10 @@ namespace KeffCavity
             keff *= 2;
         }
         return keff;
+    }
+
+    double CavityISO10599::convKeff()
+    {
+        return calcNu() * gas.getGasProperties().m_ThermalConductivity;
     }
 }   // namespace KeffCavity

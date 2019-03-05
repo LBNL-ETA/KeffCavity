@@ -92,7 +92,10 @@ namespace KeffCavity
         //! Calculates thickness of cavity in the direction of heat flow
         double calcThicknessInHeatFlowDirection(ScreenFlow screenFlow) const;
 
-        //! Calcualtion of radiation according to ISO15099 standard
+        //! Calculation of convective part of thermal conductivity
+        virtual double convKeff() = 0;
+
+        //! Calculation of radiative part of thermal conductivity
         virtual double radKeff() const = 0;
 
         ScreenFlow screenFlow;
@@ -107,8 +110,6 @@ namespace KeffCavity
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
         double thicknessInHeatFlowDirection;
-
-        virtual double calcNu() = 0;
     };
 
     class CavityISO10599 : public Cavity
@@ -128,6 +129,7 @@ namespace KeffCavity
 
     private:
         double calcNu();
+        double convKeff() override;
         double radKeff() const override;
 
         Ventilated ventilated;
