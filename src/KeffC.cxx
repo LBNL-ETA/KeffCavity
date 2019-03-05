@@ -166,6 +166,7 @@ namespace KeffCavity
 
     double Cavity::calcThicknessInHeatFlowDirection(ScreenFlow screenFlow) const
     {
+        // Radiation heat flow is always taking into account smallest edges even in jamb cavity.
         auto result{maxXDimension};
 
         if(screenFlow == ScreenFlow::Up || screenFlow == ScreenFlow::Down)
@@ -218,11 +219,11 @@ namespace KeffCavity
     {
         const auto flowDimension = cavityFlowDimension();
         std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
-                                                                       flowDimension.L,
-                                                                       flowDimension.H,
-                                                                       side1.temperature,
-                                                                       side2.temperature,
-                                                                       gas)};
+                                                                    flowDimension.L,
+                                                                    flowDimension.H,
+                                                                    side1.temperature,
+                                                                    side2.temperature,
+                                                                    gas)};
         return nu->value();
     }
 
@@ -256,5 +257,68 @@ namespace KeffCavity
             keff *= 2;
         }
         return keff;
+    }
+
+    CavityCEN::CavityCEN(ScreenFlow screenFlow,
+                         double maxXDimension,
+                         double maxYDimension,
+                         const double area,
+                         double jambHeight,
+                         const CavitySide & side1,
+                         const CavitySide & side2,
+                         double pressure,
+                         const GravityVector & gravity,
+                         RadiationCalculation radiationMethod,
+                         const Gases::CGas & gas) :
+        Cavity(screenFlow,
+               maxXDimension,
+               maxYDimension,
+               jambHeight,
+               side1,
+               side2,
+               pressure,
+               gravity,
+               radiationMethod,
+               gas),
+        area(area)
+    {
+        auto H = std::max(maxYDimension, 0.001);
+        auto L = std::max(maxXDimension, 0.001);
+
+        if(screenFlow == ScreenFlow::Down || screenFlow == ScreenFlow::Up)
+        {
+            std::swap(H, L);
+        }
+
+        d = std::sqrt(area * L / H);
+        b = area / d;
+    }
+
+    double CavityCEN::convKeff()
+    {
+        const auto c1{0.025};
+        const auto c2{0.73};
+        const auto h1 = c1 / d;
+        const auto dT = std::abs(side1.temperature - side2.temperature);
+        const auto h2 = c2 * std::pow(dT, 1.0 / 3.0);
+        double hc;
+        if(b < 0.005f)
+            hc = h1;
+        else
+            hc = std::max(h1, h2);
+        return hc * d;
+    }
+
+    double CavityCEN::radKeff() const
+    {
+
+        const auto e1nz = std::max(side1.emissivity, 0.0001);
+        const auto e2nz = std::max(side2.emissivity, 0.0001);
+        const auto E = 1 / (1 / e1nz + 1 / e2nz - 1);
+        const auto F = 0.5 * (1 + sqrt(1 + (d * d) / (b * b)) - d / b);
+        const auto TavgAbs = 0.5 * (side1.temperature + side2.temperature);
+
+        const auto hr = 1.f / (1.f / E + 1.f / F - 1) * 4 * 5.67e-8 * TavgAbs * TavgAbs * TavgAbs;
+        return hr * d;
     }
 }   // namespace KeffCavity

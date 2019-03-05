@@ -111,6 +111,10 @@ namespace KeffCavity
         double thicknessInHeatFlowDirection;
     };
 
+    //////////////////////////////////////////////////////////////////////////////////////
+    /// CavityISO10599
+    //////////////////////////////////////////////////////////////////////////////////////
+
     class CavityISO10599 : public Cavity
     {
     public:
@@ -133,4 +137,35 @@ namespace KeffCavity
 
         Ventilated ventilated;
     };
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    /// CavityCEN
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    class CavityCEN : public Cavity
+    {
+    public:
+        CavityCEN(ScreenFlow screenFlow,
+                  double maxXDimension,
+                  double maxYDimension,
+                  const double area,
+                  double jambHeight,
+                  const CavitySide & side1,
+                  const CavitySide & side2,
+                  double pressure,
+                  const GravityVector & gravity,
+                  RadiationCalculation radiationMethod,
+                  const Gases::CGas & gas);
+
+    private:
+        double convKeff() override;
+
+        double radKeff() const override;
+
+    private:
+        const double area;
+        double d;
+        double b;
+    };
+
 }   // namespace KeffCavity
