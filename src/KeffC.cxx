@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+
 #include "KeffC.hxx"
 #include "NusseltCavity.hxx"
 
@@ -9,18 +10,20 @@ namespace KeffCavity
     /// Cavity
     //////////////////////////////////////////////////////////////////////////////////////
 
-    Cavity::Cavity(ScreenFlow screenFlow,
-                   double maxXDimension,
-                   double maxYDimension,
+    Cavity::~Cavity() = default;
+
+    Cavity::Cavity(const ScreenFlow screenFlow,
+                   const double maxXDimension,
+                   const double maxYDimension,
                    const CavitySide & side1,
                    const CavitySide & side2,
-                   RadiationCalculation radiationMethod) :
+                   const RadiationCalculation radiationCalculation) :
         screenFlow(screenFlow),
         maxXDimension(maxXDimension),
         maxYDimension(maxYDimension),
         side1(side1),
         side2(side2),
-        radiationMethod(radiationMethod)
+        radiationMethod(radiationCalculation)
     {}
 
     double Cavity::effectiveConductivity()
@@ -37,17 +40,17 @@ namespace KeffCavity
     /// CavityISO10599
     //////////////////////////////////////////////////////////////////////////////////////
 
-    CavityISO10599::CavityISO10599(ScreenFlow screenFlow,
-                                   double maxXDimension,
-                                   double maxYDimension,
-                                   double jambHeight,
+    CavityISO10599::CavityISO10599(const ScreenFlow screenFlow,
+                                   const double maxXDimension,
+                                   const double maxYDimension,
+                                   const double jambHeight,
                                    const CavitySide & side1,
                                    const CavitySide & side2,
                                    const double pressure,
                                    const GravityVector & gravity,
-                                   RadiationCalculation radiationCalculation,
+                                   const RadiationCalculation radiationCalculation,
                                    const Gases::CGas & gasC,
-                                   Ventilated ventilated) :
+                                   const Ventilated ventilated) :
         Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, radiationCalculation),
         jambHeight(jambHeight),
         gravity(gravity),
@@ -108,7 +111,7 @@ namespace KeffCavity
           {{GravitySector::NegativeY, ScreenFlow::Up}, DimensionAlgorithm::None},
           {{GravitySector::NegativeY, ScreenFlow::Down}, DimensionAlgorithm::None}};
 
-        auto gapAlgorithm = algorithm.at({gravityDirection(gravity), screenFlow});
+        const auto gapAlgorithm = algorithm.at({gravityDirection(gravity), screenFlow});
 
         if(gapAlgorithm == DimensionAlgorithm::swapHL)
         {
@@ -126,26 +129,26 @@ namespace KeffCavity
         return {L, H};
     }
 
-    Cavity::GravitySector CavityISO10599::gravityDirection(const GravityVector & g) const
+    Cavity::GravitySector CavityISO10599::gravityDirection(const GravityVector & g)
     {
-        GravitySector result{ GravitySector::NegativeY };
-        if ((g.x <= g.z) && (g.x >= -g.z) && (g.y <= g.z) && (g.y >= -g.z))
+        GravitySector result{GravitySector::NegativeY};
+        if((g.x <= g.z) && (g.x >= -g.z) && (g.y <= g.z) && (g.y >= -g.z))
         {
             result = GravitySector::PositiveZ;
         }
-        if ((g.x >= g.z) && (g.x <= -g.z) && (g.y >= g.z) && (g.y <= -g.z))
+        if((g.x >= g.z) && (g.x <= -g.z) && (g.y >= g.z) && (g.y <= -g.z))
         {
             result = GravitySector::NegativeZ;
         }
-        if ((g.y < g.x) && (g.y > -g.x) && (g.z < g.x) && (g.z > -g.x))
+        if((g.y < g.x) && (g.y > -g.x) && (g.z < g.x) && (g.z > -g.x))
         {
             result = GravitySector::PositiveX;
         }
-        if ((g.y > g.x) && (g.y < -g.x) && (g.z > g.x) && (g.z < -g.x))
+        if((g.y > g.x) && (g.y < -g.x) && (g.z > g.x) && (g.z < -g.x))
         {
             result = GravitySector::NegativeX;
         }
-        if ((g.x < g.y) && (g.x > -g.y) && (g.z < g.y) && (g.z > -g.y))
+        if((g.x < g.y) && (g.x > -g.y) && (g.z < g.y) && (g.z > -g.y))
         {
             result = GravitySector::PositiveY;
         }
@@ -156,41 +159,41 @@ namespace KeffCavity
     {
         // Map that will convert screen and gravity flow into cavity flow
         std::map<std::pair<GravitySector, ScreenFlow>, CavityHeatFlow> cavHF{
-            { { GravitySector::PositiveZ, ScreenFlow::Right }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveZ, ScreenFlow::Left }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveZ, ScreenFlow::Up }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveZ, ScreenFlow::Down }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeZ, ScreenFlow::Right }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeZ, ScreenFlow::Left }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeZ, ScreenFlow::Up }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeZ, ScreenFlow::Down }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveX, ScreenFlow::Right }, CavityHeatFlow::Downward },
-        { { GravitySector::PositiveX, ScreenFlow::Left }, CavityHeatFlow::Upward },
-        { { GravitySector::PositiveX, ScreenFlow::Up }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveX, ScreenFlow::Down }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeX, ScreenFlow::Right }, CavityHeatFlow::Upward },
-        { { GravitySector::NegativeX, ScreenFlow::Left }, CavityHeatFlow::Downward },
-        { { GravitySector::NegativeX, ScreenFlow::Up }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeX, ScreenFlow::Down }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveY, ScreenFlow::Right }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveY, ScreenFlow::Left }, CavityHeatFlow::Horizontal },
-        { { GravitySector::PositiveY, ScreenFlow::Up }, CavityHeatFlow::Downward },
-        { { GravitySector::PositiveY, ScreenFlow::Down }, CavityHeatFlow::Upward },
-        { { GravitySector::NegativeY, ScreenFlow::Right }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeY, ScreenFlow::Left }, CavityHeatFlow::Horizontal },
-        { { GravitySector::NegativeY, ScreenFlow::Up }, CavityHeatFlow::Upward },
-        { { GravitySector::NegativeY, ScreenFlow::Down }, CavityHeatFlow::Downward } };
+          {{GravitySector::PositiveZ, ScreenFlow::Right}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveZ, ScreenFlow::Left}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveZ, ScreenFlow::Up}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveZ, ScreenFlow::Down}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeZ, ScreenFlow::Right}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeZ, ScreenFlow::Left}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeZ, ScreenFlow::Up}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeZ, ScreenFlow::Down}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveX, ScreenFlow::Right}, CavityHeatFlow::Downward},
+          {{GravitySector::PositiveX, ScreenFlow::Left}, CavityHeatFlow::Upward},
+          {{GravitySector::PositiveX, ScreenFlow::Up}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveX, ScreenFlow::Down}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeX, ScreenFlow::Right}, CavityHeatFlow::Upward},
+          {{GravitySector::NegativeX, ScreenFlow::Left}, CavityHeatFlow::Downward},
+          {{GravitySector::NegativeX, ScreenFlow::Up}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeX, ScreenFlow::Down}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveY, ScreenFlow::Right}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveY, ScreenFlow::Left}, CavityHeatFlow::Horizontal},
+          {{GravitySector::PositiveY, ScreenFlow::Up}, CavityHeatFlow::Downward},
+          {{GravitySector::PositiveY, ScreenFlow::Down}, CavityHeatFlow::Upward},
+          {{GravitySector::NegativeY, ScreenFlow::Right}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeY, ScreenFlow::Left}, CavityHeatFlow::Horizontal},
+          {{GravitySector::NegativeY, ScreenFlow::Up}, CavityHeatFlow::Upward},
+          {{GravitySector::NegativeY, ScreenFlow::Down}, CavityHeatFlow::Downward}};
         const auto gDirection = gravityDirection(g);
 
-        return cavHF.at({ gDirection, screenFlow });
+        return cavHF.at({gDirection, screenFlow});
     }
 
     double CavityISO10599::calcThicknessInHeatFlowDirection() const
     {
         // Radiation heat flow is always taking into account smallest edges even in jamb cavity.
-        auto result{ maxXDimension };
+        auto result{maxXDimension};
 
-        if (screenFlow == ScreenFlow::Up || screenFlow == ScreenFlow::Down)
+        if(screenFlow == ScreenFlow::Up || screenFlow == ScreenFlow::Down)
         {
             result = maxYDimension;
         }
@@ -242,13 +245,17 @@ namespace KeffCavity
         return keff;
     }
 
-    CavityCEN::CavityCEN(ScreenFlow screenFlow,
-                         double maxXDimension,
-                         double maxYDimension,
+    //////////////////////////////////////////////////////////////////////////////////////
+    /// CavityCEN
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    CavityCEN::CavityCEN(const ScreenFlow screenFlow,
+                         const double maxXDimension,
+                         const double maxYDimension,
                          const double area,
                          const CavitySide & side1,
                          const CavitySide & side2,
-                         RadiationCalculation radiationCalculation) :
+                         const RadiationCalculation radiationCalculation) :
         Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, radiationCalculation),
         area(area)
     {
