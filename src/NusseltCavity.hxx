@@ -11,6 +11,8 @@ namespace KeffCavity
     class INusselt
     {
     public:
+        virtual ~INusselt() = default;
+
         INusselt(
           const double L,       //!< Frame cavity length as described in ISO15099 standard
           const double H,       //!< Frame cavity height as described in ISO15099 standard
