@@ -1,5 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+
+
 #include <gtest/gtest.h>
 
 #include "KeffCavity.hxx"
@@ -67,4 +67,4 @@ TEST_F(TestCavityDataGravityUp, TestCavityFlowDownward)
     EXPECT_EQ(cavityFlow.L, maxXDimension);
     EXPECT_EQ(cavityFlow.H, maxYDimension);
 }
-#pragma clang diagnostic pop
+

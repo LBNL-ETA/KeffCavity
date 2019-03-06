@@ -23,7 +23,7 @@ namespace KeffCavity
         virtual double value() const = 0;
 
     protected:
-        double RaCalc(double dT, double Tavg, double length, Gases::CGas & gas);
+        double RaCalc(double length, Gases::CGas & gas);
         const double ratio;
         const double dT;
         const double Tavg;

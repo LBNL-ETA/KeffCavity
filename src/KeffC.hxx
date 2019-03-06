@@ -61,16 +61,9 @@ namespace KeffCavity
         Cavity(ScreenFlow screenFlow,
                double maxXDimension,
                double maxYDimension,
-               double jambHeight,
                const CavitySide & side1,
                const CavitySide & side2,
-               double pressure = 101325,
-               const GravityVector & gravity = {0.0, -1.0, 0.0},
-               RadiationCalculation radiationMethod = RadiationCalculation::Yes,
-               const Gases::CGas & gas = Gases::CGas());
-
-        //! Calculates cavity dimension in heat flow direction.
-        CavityFlowDimensions cavityFlowDimension() const;
+               RadiationCalculation radiationCalculation = RadiationCalculation::Yes);
 
         double effectiveConductivity();
 
@@ -85,13 +78,6 @@ namespace KeffCavity
             NegativeZ
         };
 
-        //! Calculates sector in which gravity vector is pointing out.
-        GravitySector gravityDirection(const GravityVector & gravity) const;
-        CavityHeatFlow heatFlowDirection(ScreenFlow screenFlow, const GravityVector & gravity);
-
-        //! Calculates thickness of cavity in the direction of heat flow
-        double calcThicknessInHeatFlowDirection(ScreenFlow screenFlow) const;
-
         //! Calculation of convective part of thermal conductivity
         virtual double convKeff() = 0;
 
@@ -101,14 +87,9 @@ namespace KeffCavity
         ScreenFlow screenFlow;
         double maxXDimension;
         double maxYDimension;
-        double jambHeight;
         CavitySide side1;
         CavitySide side2;
-        GravityVector gravity;
         RadiationCalculation radiationMethod;
-        Gases::CGas gas;
-        CavityHeatFlow cavityHeatFlow;
-        double thicknessInHeatFlowDirection;
     };
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -130,11 +111,26 @@ namespace KeffCavity
                        const Gases::CGas & gas = Gases::CGas(),
                        Ventilated ventilated = Ventilated::No);
 
+        //! Calculates cavity dimension in heat flow direction.
+        CavityFlowDimensions cavityFlowDimension() const;
+
     private:
         double calcNu();
         double convKeff() override;
         double radKeff() const override;
+        //! Calculates sector in which gravity vector is pointing out.
+        GravitySector gravityDirection(const GravityVector & g) const;
+        CavityHeatFlow heatFlowDirection(const GravityVector & g);
 
+        //! Calculates thickness of cavity in the direction of heat flow
+        double calcThicknessInHeatFlowDirection() const;
+
+
+        const double jambHeight;
+        GravityVector gravity;
+        Gases::CGas gas;
+        CavityHeatFlow cavityHeatFlow;
+        double thicknessInHeatFlowDirection;
         Ventilated ventilated;
     };
 
@@ -149,13 +145,9 @@ namespace KeffCavity
                   double maxXDimension,
                   double maxYDimension,
                   const double area,
-                  double jambHeight,
                   const CavitySide & side1,
                   const CavitySide & side2,
-                  double pressure,
-                  const GravityVector & gravity,
-                  RadiationCalculation radiationMethod,
-                  const Gases::CGas & gas);
+                  RadiationCalculation radiationCalculation);
 
     private:
         double convKeff() override;

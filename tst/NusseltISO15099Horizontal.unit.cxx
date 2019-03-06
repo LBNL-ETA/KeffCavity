@@ -1,5 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+
+
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -113,4 +113,4 @@ TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioInLinearInterpo
 
     EXPECT_NEAR(Nu, 5.611770, 1e-6);
 }
-#pragma clang diagnostic pop
+

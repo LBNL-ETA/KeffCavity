@@ -1,5 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+
+
 #include <gtest/gtest.h>
 
 #include "KeffCavity.hxx"
@@ -15,7 +15,7 @@ protected:
     const double maxXDimension{1.2};
     const double maxYDimension{0.8};
     const double jambHeight{1.5};
-    GravityVector gravity{0.0, -1.0, 0.0};
+    const GravityVector gravity{0, -1, 0};
     const CavitySide side1{10, 0.9};
     const CavitySide side2{20, 0.9};
 
@@ -66,4 +66,4 @@ TEST_F(TestCavityDataGravityDown, TestCavityFlowDownward)
     EXPECT_EQ(cavityFlow.L, maxXDimension);
     EXPECT_EQ(cavityFlow.H, maxYDimension);
 }
-#pragma clang diagnostic pop
+

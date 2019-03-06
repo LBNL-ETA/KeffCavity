@@ -78,3 +78,7 @@ if( BUILD_KeffC_TESTING )
   endif()
 
 config_compiler_and_linker_KeffC()
+
+if (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+endif()

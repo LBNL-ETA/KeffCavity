@@ -1,5 +1,5 @@
+#include <algorithm>
 #include <cmath>
-#include <functional>
 #include "NusseltCavity.hxx"
 #include "KeffC.hxx"
 
@@ -19,14 +19,14 @@ namespace KeffCavity
         dT(std::abs(T1 - T2)),
         Tavg((T1 + T2) * 0.5),
         gas(gasC.getGasProperties()),
-        Ra(RaCalc(dT, Tavg, length, gasC))
+        Ra(RaCalc(length, gasC))
     {}
 
-    double INusselt::RaCalc(double dT, double Tavg, double length, Gases::CGas & gasC)
+    double INusselt::RaCalc(double length, Gases::CGas & gasC)
     {
-        auto gas = gasC.getGasProperties();
-        return 9.81 * gas.m_Density * gas.m_Density * gas.m_SpecificHeat * dT * length * length
-               * length / (Tavg * gas.m_Viscosity * gas.m_ThermalConductivity);
+        auto gasP = gasC.getGasProperties();
+        return 9.81 * gasP.m_Density * gasP.m_Density * gasP.m_SpecificHeat * dT * length * length
+               * length / (Tavg * gasP.m_Viscosity * gasP.m_ThermalConductivity);
     }
 
     //////////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
+
+
 #include <gtest/gtest.h>
 #include <memory>
 
@@ -159,4 +159,4 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     EXPECT_NEAR(keff, 0.083861, 1e-6);
 }
 
-#pragma clang diagnostic pop
+
