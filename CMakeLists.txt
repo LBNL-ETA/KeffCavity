@@ -56,7 +56,7 @@ endif ()
 
 include(CMakeLists-Windows-CalcEngine.txt)
 
-include_directories( ${CMAKE_BINARY_DIR}/Windows-CalcEngine/include )
+#include_directories( ${CMAKE_BINARY_DIR}/Windows-CalcEngine/include )
 
 file(GLOB SOURCES_HXX "src/*.hxx")
 file(GLOB SOURCES_CXX "src/*.cxx")
@@ -65,7 +65,7 @@ LIST(APPEND SOURCES ${SOURCES_HXX} ${SOURCES_CXX})
 add_library(${target_name} STATIC ${SOURCES})
 
 target_link_libraries(${target_name} Windows-CalcEngine)
-add_dependencies(${target_name} Windows-CalcEngine)
+#add_dependencies(${target_name} Windows-CalcEngine)
 
 if( BUILD_KeffC_TESTING )
   	include_directories(src)
