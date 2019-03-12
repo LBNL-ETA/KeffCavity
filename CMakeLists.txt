@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.8)
 
+# Need to clear all cashe or passing arguments to ExternalProject_Add will not work
+# message(STATUS "*** All CACHE_VARIABLES ***")
+get_cmake_property(vars CACHE_VARIABLES)
+foreach(var ${vars})
+  get_property(currentHelpString CACHE "${var}" PROPERTY HELPSTRING)
+        # message("${var} = [${${var}}]  --  ${currentHelpString}")
+endforeach()
+
 set(target_name KeffCavity)
 
 project(${target_name})
