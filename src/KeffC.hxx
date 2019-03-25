@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GravityVector.hxx"
-#include "WCEGases.hpp"
+#include <WCEGases.hpp>
 
 namespace KeffCavity
 {

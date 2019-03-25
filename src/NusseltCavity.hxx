@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "WCEGases.hpp"
+#include <WCEGases.hpp>
 
 namespace KeffCavity
 {

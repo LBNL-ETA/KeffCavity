@@ -8,6 +8,8 @@ foreach(var ${vars})
         # message("${var} = [${${var}}]  --  ${currentHelpString}")
 endforeach()
 
+set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
+
 set(target_name KeffCavity)
 
 project(${target_name})
