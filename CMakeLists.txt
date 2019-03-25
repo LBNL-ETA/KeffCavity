@@ -72,7 +72,7 @@ LIST(APPEND SOURCES ${SOURCES_HXX} ${SOURCES_CXX})
 
 add_library(${target_name} STATIC ${SOURCES})
 
-target_link_libraries(${target_name} Windows-CalcEngine)
+target_link_libraries(${target_name} PUBLIC Windows-CalcEngine)
 #add_dependencies(${target_name} Windows-CalcEngine)
 
 if( BUILD_KeffC_TESTING )
