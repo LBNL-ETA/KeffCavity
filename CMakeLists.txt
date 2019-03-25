@@ -73,6 +73,15 @@ LIST(APPEND SOURCES ${SOURCES_HXX} ${SOURCES_CXX})
 add_library(${target_name} STATIC ${SOURCES})
 
 target_link_libraries(${target_name} PUBLIC Windows-CalcEngine)
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC 
+        $<INSTALL_INTERFACE:include>    
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
 #add_dependencies(${target_name} Windows-CalcEngine)
 
 if( BUILD_KeffC_TESTING )
