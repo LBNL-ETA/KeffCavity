@@ -39,6 +39,8 @@ namespace KeffCavity
     //! Structure to hold data for one side of the cavity
     struct CavitySide
     {
+        CavitySide(double temperature, double emissivity);
+
         double temperature{0};
         double emissivity{0};
     };

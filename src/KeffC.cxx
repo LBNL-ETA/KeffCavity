@@ -297,4 +297,9 @@ namespace KeffCavity
         const auto hr = 1.f / (1.f / E + 1.f / F - 1) * 4 * 5.67e-8 * TavgAbs * TavgAbs * TavgAbs;
         return hr * d;
     }
+
+    CavitySide::CavitySide(double temperature, double emissivity) :
+        temperature(temperature),
+        emissivity(emissivity)
+    {}
 }   // namespace KeffCavity
