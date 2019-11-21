@@ -119,7 +119,7 @@ namespace KeffCavity
           const CavitySide & side1,   //!< Surface 1 of frame cavity (temperature and emissivity)
           const CavitySide & side2,   //!< Surface 2 of frame cavity (temperature and emissivity)
           double pressure = 101325,   //!< Pressure of gas inside the frame cavity
-          const GravityVector & gravity = {0.0, -1.0, 0.0},   //!< Gravity unit vector
+          const FenestrationCommon::GravityVector & gravity = {0.0, -1.0, 0.0},   //!< Gravity unit vector
           RadiationCalculation radiationCalculation =
             RadiationCalculation::Yes,               //!< Flag to turn on/off radiation calculations
           const Gases::CGas & gas = Gases::CGas(),   //!< Gas that fills frame cavity
@@ -137,15 +137,15 @@ namespace KeffCavity
         double radKeff() const override;
 
         //! Calculates sector to which gravity vector is pointing out.
-        static GravitySector gravityDirection(const GravityVector & g);
-        CavityHeatFlow heatFlowDirection(const GravityVector & g);
+        static GravitySector gravityDirection(const FenestrationCommon::GravityVector & g);
+        CavityHeatFlow heatFlowDirection(const FenestrationCommon::GravityVector & g);
 
         //! Calculates thickness of cavity in the direction of heat flow
         double calcThicknessInHeatFlowDirection() const;
 
 
         const double jambHeight;
-        GravityVector gravity;
+        FenestrationCommon::GravityVector gravity;
         Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
         double thicknessInHeatFlowDirection;

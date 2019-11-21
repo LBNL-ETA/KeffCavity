@@ -16,7 +16,7 @@ protected:
     const double maxXDimension{1.2};
     const double maxYDimension{0.8};
     const double jambHeight{1.5};
-    const GravityVector gravity{0, 0, -1};
+    const FenestrationCommon::GravityVector gravity{0, 0, -1};
     const CavitySide side1{10, 0.9};
     const CavitySide side2{20, 0.9};
 

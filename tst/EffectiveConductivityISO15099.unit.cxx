@@ -23,7 +23,7 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityNegativeYStan
     const double T2 = 278.7715;
     const double e2 = 0.9;
     const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
-    const GravityVector g{0, -1, 0};
+    const FenestrationCommon::GravityVector g{0, -1, 0};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
                                       MaxXDimension,
@@ -52,7 +52,7 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double T2 = 279.0344;
     const double e2 = 0.9;
     const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
-    const GravityVector g{0, 0, -1};
+    const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
                                       MaxXDimension,
@@ -81,7 +81,7 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double T2 = 279.0344;
     const double e2 = 0.9;
     const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
-    const GravityVector g{0, 0, -1};
+    const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     const KeffCavity::Ventilated ventilated = KeffCavity::Ventilated::Yes;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
@@ -112,7 +112,7 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double T2 = 275.7409;
     const double e2 = 0.9;
     const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
-    const GravityVector g{0, 0, -1};
+    const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
                                       MaxXDimension,
@@ -141,7 +141,7 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double T2 = 276.1058;
     const double e2 = 0.9;
     const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
-    const GravityVector g{0, 0, -1};
+    const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
                                       MaxXDimension,

@@ -47,7 +47,7 @@ namespace KeffCavity
                                    const CavitySide & side1,
                                    const CavitySide & side2,
                                    const double pressure,
-                                   const GravityVector & gravity,
+                                   const FenestrationCommon::GravityVector & gravity,
                                    const RadiationCalculation radiationCalculation,
                                    const Gases::CGas & gasC,
                                    const Ventilated ventilated) :
@@ -129,7 +129,7 @@ namespace KeffCavity
         return {L, H};
     }
 
-    Cavity::GravitySector CavityISO10599::gravityDirection(const GravityVector & g)
+    Cavity::GravitySector CavityISO10599::gravityDirection(const FenestrationCommon::GravityVector & g)
     {
         GravitySector result{GravitySector::NegativeY};
         if((g.x <= g.z) && (g.x >= -g.z) && (g.y <= g.z) && (g.y >= -g.z))
@@ -155,7 +155,7 @@ namespace KeffCavity
         return result;
     }
 
-    CavityHeatFlow CavityISO10599::heatFlowDirection(const GravityVector & g)
+    CavityHeatFlow CavityISO10599::heatFlowDirection(const FenestrationCommon::GravityVector & g)
     {
         // Map that will convert screen and gravity flow into cavity flow
         std::map<std::pair<GravitySector, ScreenFlow>, CavityHeatFlow> cavHF{
