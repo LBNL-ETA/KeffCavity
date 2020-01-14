@@ -5,14 +5,14 @@
 
 #include "KeffCavity.hxx"
 
-class TestEffectiveConductivityCEN : public testing::Test
+class TestEffectivePropertiesCEN : public testing::Test
 {
 protected:
     void SetUp() override
     {}
 };
 
-TEST_F(TestEffectiveConductivityCEN, TestHorizontalFlow)
+TEST_F(TestEffectivePropertiesCEN, TestHorizontalFlow)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.0756;
@@ -29,14 +29,19 @@ TEST_F(TestEffectiveConductivityCEN, TestHorizontalFlow)
                                  area,
                                  {T1, e1},
                                  {T2, e2},
+                                 Gases::CGas(),
                                  radCal);
 
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.307709, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.022690, 1e-6);
 }
 
-TEST_F(TestEffectiveConductivityCEN, TestUpwardFlow)
+TEST_F(TestEffectivePropertiesCEN, TestUpwardFlow)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.2246;
@@ -53,9 +58,14 @@ TEST_F(TestEffectiveConductivityCEN, TestUpwardFlow)
                                  area,
                                  {T1, e1},
                                  {T2, e2},
+                                 Gases::CGas(),
                                  radCal);
 
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.324369, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.040723, 1e-6);
 }

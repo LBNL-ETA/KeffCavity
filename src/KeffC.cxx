@@ -17,12 +17,14 @@ namespace KeffCavity
                    const double maxYDimension,
                    const CavitySide & side1,
                    const CavitySide & side2,
+                   const Gases::CGas & gas,
                    const RadiationCalculation radiationCalculation) :
         screenFlow(screenFlow),
         maxXDimension(maxXDimension),
         maxYDimension(maxYDimension),
         side1(side1),
         side2(side2),
+        gas(gas),
         radiationMethod(radiationCalculation)
     {}
 
@@ -34,6 +36,15 @@ namespace KeffCavity
             Keff += radKeff();
         }
         return Keff;
+    }
+
+    double Cavity::effectiveDiffusionResistanceFactor()
+    {
+        const auto gasProp{gas.getGasProperties()};
+        const auto waterVaporPermeability{std::pow(Nu(), 2) * gasProp.m_ThermalConductivity
+                                          / (gasProp.m_Density * gasProp.m_SpecificHeat)
+                                          * std::abs(side1.temperature - side2.temperature)};
+        return 2.5e-5 / waterVaporPermeability;
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -51,10 +62,9 @@ namespace KeffCavity
                                    const RadiationCalculation radiationCalculation,
                                    const Gases::CGas & gasC,
                                    const Ventilated ventilated) :
-        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, radiationCalculation),
+        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, gasC, radiationCalculation),
         jambHeight(jambHeight),
         gravity(gravity),
-        gas(gasC),
         cavityHeatFlow(heatFlowDirection(gravity)),
         thicknessInHeatFlowDirection(calcThicknessInHeatFlowDirection()),
         ventilated(ventilated)
@@ -129,7 +139,8 @@ namespace KeffCavity
         return {L, H};
     }
 
-    Cavity::GravitySector CavityISO10599::gravityDirection(const FenestrationCommon::GravityVector & g)
+    Cavity::GravitySector
+      CavityISO10599::gravityDirection(const FenestrationCommon::GravityVector & g)
     {
         GravitySector result{GravitySector::NegativeY};
         if((g.x <= g.z) && (g.x >= -g.z) && (g.y <= g.z) && (g.y >= -g.z))
@@ -201,7 +212,7 @@ namespace KeffCavity
         return result;
     }
 
-    double CavityISO10599::calcNu()
+    double CavityISO10599::Nu()
     {
         const auto flowDimension = cavityFlowDimension();
         std::unique_ptr<INusselt> nu{NusseltISO15099Factory::create(cavityHeatFlow,
@@ -237,7 +248,7 @@ namespace KeffCavity
 
     double CavityISO10599::convKeff()
     {
-        auto keff = calcNu() * gas.getGasProperties().m_ThermalConductivity;
+        auto keff = Nu() * gas.getGasProperties().m_ThermalConductivity;
         if(ventilated == Ventilated::Yes)
         {
             keff *= 2;
@@ -255,8 +266,9 @@ namespace KeffCavity
                          const double area,
                          const CavitySide & side1,
                          const CavitySide & side2,
+                         const Gases::CGas & gas,
                          const RadiationCalculation radiationCalculation) :
-        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, radiationCalculation),
+        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, gas, radiationCalculation),
         area(area)
     {
         auto H = std::max(maxYDimension, 0.001);
@@ -296,6 +308,11 @@ namespace KeffCavity
 
         const auto hr = 1.f / (1.f / E + 1.f / F - 1) * 4 * 5.67e-8 * TavgAbs * TavgAbs * TavgAbs;
         return hr * d;
+    }
+
+    double CavityCEN::Nu()
+    {
+        return convKeff() / gas.getGasProperties().m_ThermalConductivity;
     }
 
     CavitySide::CavitySide(double temperature, double emissivity) :
