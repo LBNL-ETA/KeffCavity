@@ -5,14 +5,14 @@
 
 #include "KeffCavity.hxx"
 
-class TestEffectiveConductivityISO15099 : public testing::Test
+class TestEffectivePropertiesISO15099 : public testing::Test
 {
 protected:
     void SetUp() override
     {}
 };
 
-TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityNegativeYStandardRatio)
+TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityNegativeYStandardRatio)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.0756;
@@ -39,9 +39,13 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityNegativeYStan
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.354857, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.011554, 1e-6);
 }
 
-TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenStandardRatio)
+TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStandardRatio)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.0756;
@@ -68,9 +72,13 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.314463, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.019950, 1e-6);
 }
 
-TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenStandardRatioVentilated)
+TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStandardRatioVentilated)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.0756;
@@ -99,9 +107,13 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenSta
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.628926, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.019950, 1e-6);
 }
 
-TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRatioLessThanHalf)
+TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatioLessThanHalf)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.2756;
@@ -128,9 +140,13 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.990379, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.001498, 1e-6);
 }
 
-TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRatioMoreThanFive)
+TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatioMoreThanFive)
 {
     Gases::CGas gas;
     const double MaxXDimension = 0.0161;
@@ -157,6 +173,10 @@ TEST_F(TestEffectiveConductivityISO15099, TestHorizontalFlowGravityIntoScreenRat
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.083861, 1e-6);
+
+    const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
+
+    EXPECT_NEAR(diffusionResistanceFactor, 0.376586, 1e-6);
 }
 
 

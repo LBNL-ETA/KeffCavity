@@ -61,17 +61,25 @@ namespace KeffCavity
     {
     public:
         virtual ~Cavity();
-        Cavity(
-          ScreenFlow screenFlow,      //!< Heat flow relative to computer screen
-          double maxXDimension,       //!< Maximal dimension of cavity in x (horizontal) direction
-          double maxYDimension,       //!< Maximal dimension of cavity in y (vertical) direction
-          const CavitySide & side1,   //!< Surface 1 of frame cavity (temperature and emissivity)
-          const CavitySide & side2,   //!< Surface 2 of frame cavity (temperature and emissivity)
-          RadiationCalculation radiationCalculation =
-            RadiationCalculation::Yes   //!< Flag to turn on/off radiation calculations
-        );
+
+        //! \brief Class to calculate effective properties of cavity
+        //!
+        //! \param screenFlow Heat flow relative to computer screen
+        //! \param maxXDimension Maximal dimension of cavity in x (horizontal) direction
+        //! \param maxYDimension Maximal dimension of cavity in y (vertical) direction
+        //! \param side1 Surface 1 of frame cavity (temperature and emissivity)
+        //! \param side2 Surface 2 of frame cavity (temperature and emissivity)
+        //! \param radiationCalculation Flag to turn on/off radiation calculations
+        Cavity(ScreenFlow screenFlow,
+               double maxXDimension,
+               double maxYDimension,
+               const CavitySide & side1,
+               const CavitySide & side2,
+               const Gases::CGas & gas,
+               RadiationCalculation radiationCalculation = RadiationCalculation::Yes);
 
         double effectiveConductivity();
+        double effectiveDiffusionResistanceFactor();
 
     protected:
         //! \brief Information for gravity vector orientation.
@@ -94,11 +102,14 @@ namespace KeffCavity
         //! Calculation of radiative part of thermal conductivity
         virtual double radKeff() const = 0;
 
+        virtual double Nu() = 0;
+
         ScreenFlow screenFlow;
         double maxXDimension;
         double maxYDimension;
         CavitySide side1;
         CavitySide side2;
+        Gases::CGas gas;
         RadiationCalculation radiationMethod;
     };
 
@@ -110,29 +121,38 @@ namespace KeffCavity
     class CavityISO10599 : public Cavity
     {
     public:
-        CavityISO10599(
-          ScreenFlow screenFlow,   //!< Heat flow relative to computer screen
-          double maxXDimension,    //!< Maximal dimension of cavity in x (horizontal) direction
-          double maxYDimension,    //!< Maximal dimension of cavity in y (vertical) direction
-          double jambHeight,   //!< Jamb dimension of frame cavity (jamb is measured direction into
-                               //!< the screen)
-          const CavitySide & side1,   //!< Surface 1 of frame cavity (temperature and emissivity)
-          const CavitySide & side2,   //!< Surface 2 of frame cavity (temperature and emissivity)
-          double pressure = 101325,   //!< Pressure of gas inside the frame cavity
-          const FenestrationCommon::GravityVector & gravity = {0.0, -1.0, 0.0},   //!< Gravity unit vector
-          RadiationCalculation radiationCalculation =
-            RadiationCalculation::Yes,               //!< Flag to turn on/off radiation calculations
-          const Gases::CGas & gas = Gases::CGas(),   //!< Gas that fills frame cavity
-          Ventilated ventilated =
-            Ventilated::No   //!< Flag that shows if frame cavity is ventilated
-        );
+        //! \brief Construction of cavity according to ISO 15099 standard
+        //!
+        //! \param screenFlow Heat flow relative to computer screen
+        //! \param maxXDimension Maximal dimension of cavity in x (horizontal) direction
+        //! \param maxYDimension Maximal dimension of cavity in y (vertical) direction
+        //! \param jambHeight Jamb dimension of frame cavity (jamb is measured direction into
+        //! the screen)
+        //! \param side1 Surface 1 of frame cavity (temperature and emissivity)
+        //! \param side2 Surface 2 of frame cavity (temperature and emissivity)
+        //! \param pressure Pressure of gas inside the frame cavity
+        //! \param gravity Gravity unit vector
+        //! \param radiationCalculation Flag to turn on/off radiation calculations
+        //! \param gas Gas that fills frame cavity
+        //! \param ventilated Flag that shows if frame cavity is ventilated
+        CavityISO10599(ScreenFlow screenFlow,
+                       double maxXDimension,
+                       double maxYDimension,
+                       double jambHeight,
+                       const CavitySide & side1,
+                       const CavitySide & side2,
+                       double pressure = 101325,
+                       const FenestrationCommon::GravityVector & gravity = {0.0, -1.0, 0.0},
+                       RadiationCalculation radiationCalculation = RadiationCalculation::Yes,
+                       const Gases::CGas & gas = Gases::CGas(),
+                       Ventilated ventilated = Ventilated::No);
 
         //! Calculates cavity dimension in heat flow direction. Dimension L will always be
         //! horizontal compared to heat flow direction, while H will be vertical.
         CavityFlowDimensions cavityFlowDimension() const;
 
     private:
-        double calcNu();
+        double Nu() override;
         double convKeff() override;
         double radKeff() const override;
 
@@ -146,7 +166,6 @@ namespace KeffCavity
 
         const double jambHeight;
         FenestrationCommon::GravityVector gravity;
-        Gases::CGas gas;
         CavityHeatFlow cavityHeatFlow;
         double thicknessInHeatFlowDirection;
         Ventilated ventilated;
@@ -160,21 +179,31 @@ namespace KeffCavity
     class CavityCEN : public Cavity
     {
     public:
-        CavityCEN(
-          ScreenFlow screenFlow,      //!< Heat flow direction
-          double maxXDimension,       //!< Maximal dimension of cavity in x (horizontal) direction
-          double maxYDimension,       //!< Maximal dimension of cavity in y (vertical) direction
-          double area,                //!< Frame cavity area (relative to the screen)
-          const CavitySide & side1,   //!< Surface 1 of frame cavity (temperature and emissivity)
-          const CavitySide & side2,   //!< Surface 2 of frame cavity (temperature and emissivity)
-          RadiationCalculation
-            radiationCalculation   //!< Flag to turn on/off radiation calculations
-        );
+        //! \brief Construction of cavity according to CEN standard
+        //!
+        //! \param screenFlow Heat flow direction
+        //! \param maxXDimension Maximal dimension of cavity in x (horizontal) direction
+        //! \param maxYDimension Maximal dimension of cavity in y (vertical) direction
+        //! \param area Frame cavity area (relative to the screen)
+        //! \param side1 Surface 1 of frame cavity (temperature and emissivity)
+        //! \param side2 Surface 2 of frame cavity (temperature and emissivity)
+        //! \param gas Gas that fills frame cavity
+        //! \param radiationCalculation Flag to turn on/off radiation calculations
+        CavityCEN(ScreenFlow screenFlow,
+                  double maxXDimension,
+                  double maxYDimension,
+                  double area,
+                  const CavitySide & side1,
+                  const CavitySide & side2,
+                  const Gases::CGas & gas = Gases::CGas(),
+                  RadiationCalculation radiationCalculation = RadiationCalculation::Yes);
 
     private:
         double convKeff() override;
 
         double radKeff() const override;
+
+        double Nu() override;
 
         const double area;
         double d;
