@@ -42,7 +42,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityNegativeYStanda
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.011554, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor,  0.041793, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStandardRatio)
@@ -75,7 +75,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.019950, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.084050, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStandardRatioVentilated)
@@ -110,7 +110,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.019950, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.084050, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatioLessThanHalf)
@@ -143,7 +143,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.001498, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.006388, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatioMoreThanFive)
@@ -176,7 +176,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.376586, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 1.334508, 1e-6);
 }
 
 

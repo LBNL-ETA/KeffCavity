@@ -38,7 +38,7 @@ TEST_F(TestEffectivePropertiesCEN, TestHorizontalFlow)
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.022690, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.097322, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesCEN, TestUpwardFlow)
@@ -67,5 +67,5 @@ TEST_F(TestEffectivePropertiesCEN, TestUpwardFlow)
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.040723, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.127410, 1e-6);
 }

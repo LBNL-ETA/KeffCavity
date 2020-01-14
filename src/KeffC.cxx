@@ -42,8 +42,7 @@ namespace KeffCavity
     {
         const auto gasProp{gas.getGasProperties()};
         const auto waterVaporPermeability{std::pow(Nu(), 2) * gasProp.m_ThermalConductivity
-                                          / (gasProp.m_Density * gasProp.m_SpecificHeat)
-                                          * std::abs(side1.temperature - side2.temperature)};
+                                          / (gasProp.m_Density * gasProp.m_SpecificHeat)};
         return 2.5e-5 / waterVaporPermeability;
     }
 
