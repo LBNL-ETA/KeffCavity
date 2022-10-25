@@ -16,7 +16,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "0")
+set(CMAKE_PROJECT_VERSION_PATCH "12")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
