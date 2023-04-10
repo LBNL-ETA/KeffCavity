@@ -149,11 +149,11 @@ namespace KeffCavity
         switch(cavityHeatFlow)
         {
             case CavityHeatFlow::Horizontal:
-                return std::unique_ptr<NusseltISO15099Horizontal>(new NusseltISO15099Horizontal(L, H, T1, T2, gas));
+                return std::make_unique<NusseltISO15099Horizontal>(L, H, T1, T2, gas);
             case CavityHeatFlow::Upward:
-                return std::unique_ptr<NusseltISO15099Upward>(new NusseltISO15099Upward(L, H, T1, T2, gas));
+                return std::make_unique<NusseltISO15099Upward>(L, H, T1, T2, gas);
             case CavityHeatFlow::Downward:
-                return std::unique_ptr<NusseltISO15099Downward>(new NusseltISO15099Downward(L, H, T1, T2, gas));
+                return std::make_unique<NusseltISO15099Downward>(L, H, T1, T2, gas);
         }
 
         return nullptr;
