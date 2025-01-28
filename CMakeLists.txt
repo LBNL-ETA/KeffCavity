@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 
-# Need to clear all cashe or passing arguments to ExternalProject_Add will not work
-# message(STATUS "*** All CACHE_VARIABLES ***")
-get_cmake_property(vars CACHE_VARIABLES)
-foreach(var ${vars})
-  get_property(currentHelpString CACHE "${var}" PROPERTY HELPSTRING)
-        # message("${var} = [${${var}}]  --  ${currentHelpString}")
-endforeach()
+if (MSVC)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
 
 set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
@@ -16,7 +12,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "12")
+set(CMAKE_PROJECT_VERSION_PATCH "16")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -68,7 +64,19 @@ if( DOWNLOAD_GTEST STREQUAL ON )
 	include_directories( ${CMAKE_BINARY_DIR}/googletest-src/include )
 endif ()
 
-include(CMakeLists-Windows-CalcEngine.txt)
+include(FetchContent)
+
+# Test from Windows-CalcEngine should not be visible here
+set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
+
+set(WindowsCalcEngine_Branch "Version_1.0.50")
+
+FetchContent_Declare(
+    WindowsCalcEngine
+    GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
+    GIT_TAG ${WindowsCalcEngine_Branch}
+)
+FetchContent_MakeAvailable(WindowsCalcEngine)
 
 #include_directories( ${CMAKE_BINARY_DIR}/Windows-CalcEngine/include )
 
