@@ -68,15 +68,13 @@ include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-
 set(WindowsCalcEngine_Branch "Version_1.0.50")
-
 FetchContent_Declare(
-    WindowsCalcEngine
+    WindowsCalc-Engine
     GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
     GIT_TAG ${WindowsCalcEngine_Branch}
 )
-FetchContent_MakeAvailable(WindowsCalcEngine)
+FetchContent_MakeAvailable(WindowsCalc-Engine)
 
 #include_directories( ${CMAKE_BINARY_DIR}/Windows-CalcEngine/include )
 
