@@ -12,7 +12,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "16")
+set(CMAKE_PROJECT_VERSION_PATCH "17")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -68,15 +68,13 @@ include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "LouveredShutters")
+set(WindowsCalcEngine_Branch "Version_1.0.51")
 FetchContent_Declare(
     Windows-CalcEngine
     GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
     GIT_TAG ${WindowsCalcEngine_Branch}
 )
 FetchContent_MakeAvailable(Windows-CalcEngine)
-
-#include_directories( ${CMAKE_BINARY_DIR}/Windows-CalcEngine/include )
 
 file(GLOB SOURCES_HXX "src/*.hxx")
 file(GLOB SOURCES_CXX "src/*.cxx")
