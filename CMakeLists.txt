@@ -68,7 +68,7 @@ include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.57")
+set(WindowsCalcEngine_Branch "WavelengthMatrices")
 FetchContent_Declare(
     Windows-CalcEngine
     GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
