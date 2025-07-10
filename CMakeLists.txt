@@ -12,7 +12,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "24")
+set(CMAKE_PROJECT_VERSION_PATCH "25")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -68,7 +68,7 @@ include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "WavelengthMatrices")
+set(WindowsCalcEngine_Branch "Version_1.0.58")
 FetchContent_Declare(
     Windows-CalcEngine
     GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
