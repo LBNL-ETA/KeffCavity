@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.14)
 
 if (MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -42,39 +42,34 @@ else()
 endif()
 
 if( DOWNLOAD_GTEST STREQUAL ON )
-	configure_file(CMakeLists-GTest.txt.in ${CMAKE_BINARY_DIR}/googletest-download/CMakeLists.txt)
-	execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
-	execute_process(COMMAND ${CMAKE_COMMAND} --build .
-			WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
-
 	# Prevent GoogleTest from overriding our compiler/linker options
 	# when building with Visual Studio
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-	# Add googletest directly to our build. This adds
-	# the following targets: gtest, gtest_main, gmock
-	# and gmock_main
-	add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
-			${CMAKE_BINARY_DIR}/googletest-build)
-
-	# Now simply link your own targets against gtest, gmock,
-	# etc. as appropriate
-
-	include_directories( ${CMAKE_BINARY_DIR}/googletest-src/include )
+	if(NOT TARGET gtest)
+		FetchContent_Declare(
+			googletest
+			GIT_REPOSITORY https://github.com/google/googletest.git
+			GIT_TAG v1.14.0
+		)
+		FetchContent_MakeAvailable(googletest)
+	endif()
 endif ()
 
 include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.66")
-FetchContent_Declare(
-    Windows-CalcEngine
-    GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
-    GIT_TAG ${WindowsCalcEngine_Branch}
-)
-FetchContent_MakeAvailable(Windows-CalcEngine)
+set(WindowsCalcEngine_Branch "feature/disable-wide-char")
+
+if(NOT TARGET Windows-CalcEngine)
+    FetchContent_Declare(
+        Windows-CalcEngine
+        GIT_REPOSITORY https://github.com/LBNL-ETA/Windows-CalcEngine
+        GIT_TAG ${WindowsCalcEngine_Branch}
+    )
+    FetchContent_MakeAvailable(Windows-CalcEngine)
+endif()
 
 file(GLOB SOURCES_HXX "src/*.hxx")
 file(GLOB SOURCES_CXX "src/*.cxx")
