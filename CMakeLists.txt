@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
 
-if (MSVC)
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif()
-
 set( CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON )
 
 set(target_name KeffCavity)
@@ -12,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "31")
+set(CMAKE_PROJECT_VERSION_PATCH "32")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -60,7 +56,7 @@ include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "feature/disable-wide-char")
+set(WindowsCalcEngine_Branch "Version_1.0.67")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
