@@ -37,6 +37,8 @@ else()
 	set(DOWNLOAD_GTEST ON)
 endif()
 
+include(FetchContent)
+
 if( DOWNLOAD_GTEST STREQUAL ON )
 	# Prevent GoogleTest from overriding our compiler/linker options
 	# when building with Visual Studio
@@ -51,8 +53,6 @@ if( DOWNLOAD_GTEST STREQUAL ON )
 		FetchContent_MakeAvailable(googletest)
 	endif()
 endif ()
-
-include(FetchContent)
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
