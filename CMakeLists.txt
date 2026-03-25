@@ -56,7 +56,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.67")
+set(WindowsCalcEngine_Branch "2026MarchFixes_2")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
