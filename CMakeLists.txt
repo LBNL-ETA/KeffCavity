@@ -8,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "33")
+set(CMAKE_PROJECT_VERSION_PATCH "34")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -56,7 +56,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.68")
+set(WindowsCalcEngine_Branch "Version_1.0.70")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
@@ -77,6 +77,9 @@ LIST(APPEND SOURCES ${SOURCES_HXX} ${SOURCES_CXX})
 add_library(${target_name} STATIC ${SOURCES})
 
 target_link_libraries(${target_name} PUBLIC Windows-CalcEngine)
+
+# Export branch info for parent projects
+set_property(TARGET ${target_name} PROPERTY WindowsCalcEngine_Branch ${WindowsCalcEngine_Branch})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC 
