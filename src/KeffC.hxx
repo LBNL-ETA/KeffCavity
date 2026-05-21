@@ -29,11 +29,19 @@ namespace KeffCavity
         Down
     };
 
-    //! Flag to show which radiation methodology is used.
+    //! Flag to select the radiation methodology. Radiation is always included in
+    //! effective conductivity; only the method differs.
+    //!
+    //! Simplified: net-emissivity formula with view-factor correction (the path
+    //! implemented today in radKeff()).
+    //!
+    //! Detailed: full view-factor / enclosure radiation. Not yet implemented in
+    //! Windows-CalcEngine; currently falls back to Simplified so radiation is
+    //! never silently omitted.
     enum class RadiationCalculation
     {
-        No,
-        Yes
+        Simplified,
+        Detailed
     };
 
     //! Structure to hold data for one side of the cavity
@@ -76,10 +84,11 @@ namespace KeffCavity
                const CavitySide & side1,
                const CavitySide & side2,
                const Gases::CGas & gas,
-               RadiationCalculation radiationCalculation = RadiationCalculation::Yes);
+               RadiationCalculation radiationCalculation = RadiationCalculation::Simplified);
 
         double effectiveConductivity();
         double effectiveDiffusionResistanceFactor();
+        double nusselt();
 
     protected:
         //! \brief Information for gravity vector orientation.
@@ -143,7 +152,7 @@ namespace KeffCavity
                        const CavitySide & side2,
                        double pressure = 101325,
                        const FenestrationCommon::GravityVector & gravity = {0.0, -1.0, 0.0},
-                       RadiationCalculation radiationCalculation = RadiationCalculation::Yes,
+                       RadiationCalculation radiationCalculation = RadiationCalculation::Simplified,
                        const Gases::CGas & gas = Gases::CGas(),
                        Ventilated ventilated = Ventilated::No);
 
@@ -196,7 +205,7 @@ namespace KeffCavity
                   const CavitySide & side1,
                   const CavitySide & side2,
                   const Gases::CGas & gas = Gases::CGas(),
-                  RadiationCalculation radiationCalculation = RadiationCalculation::Yes);
+                  RadiationCalculation radiationCalculation = RadiationCalculation::Simplified);
 
     private:
         double convKeff() override;

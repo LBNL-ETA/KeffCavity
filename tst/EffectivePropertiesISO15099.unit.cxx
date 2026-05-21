@@ -22,7 +22,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityNegativeYStanda
     const double e1 = 0.9;
     const double T2 = 278.7715;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     const FenestrationCommon::GravityVector g{0, -1, 0};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
@@ -40,6 +40,8 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityNegativeYStanda
 
     EXPECT_NEAR(keff, 0.354857, 1e-6);
 
+    EXPECT_NEAR(cavity.nusselt(), 5.611304, 1e-6);
+
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
     EXPECT_NEAR(diffusionResistanceFactor,  0.041793, 1e-6);
@@ -55,7 +57,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
     const double e1 = 0.9;
     const double T2 = 279.0344;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
@@ -73,6 +75,8 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
 
     EXPECT_NEAR(keff, 0.314463, 1e-6);
 
+    EXPECT_NEAR(cavity.nusselt(), 3.957320, 1e-6);
+
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
     EXPECT_NEAR(diffusionResistanceFactor, 0.084050, 1e-6);
@@ -88,7 +92,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
     const double e1 = 0.9;
     const double T2 = 279.0344;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     const KeffCavity::Ventilated ventilated = KeffCavity::Ventilated::Yes;
@@ -108,6 +112,8 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStand
 
     EXPECT_NEAR(keff, 0.628926, 1e-6);
 
+    EXPECT_NEAR(cavity.nusselt(), 3.957320, 1e-6);
+
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
     EXPECT_NEAR(diffusionResistanceFactor, 0.084050, 1e-6);
@@ -123,7 +129,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
     const double e1 = 0.9;
     const double T2 = 275.7409;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
@@ -141,6 +147,8 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
 
     EXPECT_NEAR(keff, 0.990379, 1e-6);
 
+    EXPECT_NEAR(cavity.nusselt(), 14.517909, 1e-6);
+
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
     EXPECT_NEAR(diffusionResistanceFactor, 0.006388, 1e-6);
@@ -156,7 +164,7 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
     const double e1 = 0.9;
     const double T2 = 276.1058;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     const FenestrationCommon::GravityVector g{0, 0, -1};
     const double pressure = 101325;
     KeffCavity::CavityISO10599 cavity(KeffCavity::ScreenFlow::Right,
@@ -173,6 +181,8 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.083861, 1e-6);
+
+    EXPECT_NEAR(cavity.nusselt(), 1.001951, 1e-6);
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 

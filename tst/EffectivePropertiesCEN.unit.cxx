@@ -22,7 +22,7 @@ TEST_F(TestEffectivePropertiesCEN, TestHorizontalFlow)
     const double e1 = 0.9;
     const double T2 = 279.068;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     KeffCavity::CavityCEN cavity(KeffCavity::ScreenFlow::Right,
                                  MaxXDimension,
                                  MaxYDimension,
@@ -35,6 +35,8 @@ TEST_F(TestEffectivePropertiesCEN, TestHorizontalFlow)
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.307709, 1e-6);
+
+    EXPECT_NEAR(cavity.nusselt(), 3.725335, 1e-6);
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
@@ -51,7 +53,7 @@ TEST_F(TestEffectivePropertiesCEN, TestUpwardFlow)
     const double e1 = 0.9;
     const double T2 = 274.8692;
     const double e2 = 0.9;
-    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Yes;
+    const KeffCavity::RadiationCalculation radCal = KeffCavity::RadiationCalculation::Simplified;
     KeffCavity::CavityCEN cavity(KeffCavity::ScreenFlow::Up,
                                  MaxXDimension,
                                  MaxYDimension,
@@ -64,6 +66,8 @@ TEST_F(TestEffectivePropertiesCEN, TestUpwardFlow)
     const double keff = cavity.effectiveConductivity();
 
     EXPECT_NEAR(keff, 0.324369, 1e-6);
+
+    EXPECT_NEAR(cavity.nusselt(), 3.255883, 1e-6);
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 

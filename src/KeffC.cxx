@@ -31,9 +31,16 @@ namespace KeffCavity
     double Cavity::effectiveConductivity()
     {
         auto Keff = convKeff();
-        if(radiationMethod == RadiationCalculation::Yes)
+        // TODO Detailed: full view-factor / enclosure radiation belongs in
+        // Windows-CalcEngine and will replace this branch once available.
+        // Until then Detailed falls back to the Simplified path so radiation
+        // is always included in Keff.
+        switch(radiationMethod)
         {
-            Keff += radKeff();
+            case RadiationCalculation::Simplified:
+            case RadiationCalculation::Detailed:
+                Keff += radKeff();
+                break;
         }
         return Keff;
     }
@@ -44,6 +51,11 @@ namespace KeffCavity
         const auto waterVaporPermeability{std::pow(Nu(), 2) * gasProp.m_ThermalConductivity
                                           / (gasProp.m_Density * gasProp.m_SpecificHeat)};
         return 2.5e-5 / waterVaporPermeability;
+    }
+
+    double Cavity::nusselt()
+    {
+        return Nu();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
