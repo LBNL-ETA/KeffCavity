@@ -99,9 +99,15 @@ namespace KeffCavity
         }
         if(ratio >= 1.0 / 5.0 && ratio <= 2.0)
         {
-            const auto lowPoint = 0.2;
-            const auto highPoint = 2.0;
-            Nu = LinearInterp(ratio, lowPoint, Nu2(lowPoint), highPoint, Nu1(highPoint));
+            // ISO 15099 6.6.3 c) prescribes linear interpolation in H (the
+            // cavity dimension perpendicular to heat flow). Since ratio = L/H,
+            // 1/ratio = H/L; interpolating linearly in H/L matches the standard
+            // and the legacy Fortran implementation, while interpolating in
+            // ratio itself biases the blend in the opposite direction.
+            const auto inverseLowRatio = 0.5;   // 1/2.0, where Nu1 is evaluated
+            const auto inverseHighRatio = 5.0;  // 1/0.2, where Nu2 is evaluated
+            Nu = LinearInterp(
+              1.0 / ratio, inverseLowRatio, Nu1(2.0), inverseHighRatio, Nu2(0.2));
         }
         return Nu;
     }

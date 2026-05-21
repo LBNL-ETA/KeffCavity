@@ -60,7 +60,7 @@ TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioInLinearInterpo
 
     const double Nu = nu->value();
 
-    EXPECT_NEAR(Nu, 45.881166, 1e-6);
+    EXPECT_NEAR(Nu, 45.283007, 1e-6);
 }
 
 TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioLessThanHalf_ThermExample)
@@ -111,6 +111,6 @@ TEST_F(TestNusseltISO15099Horizontal, TestISO15099HorizontalRatioInLinearInterpo
 
     const double Nu = nu->value();
 
-    EXPECT_NEAR(Nu, 5.611770, 1e-6);
+    EXPECT_NEAR(Nu, 6.528319, 1e-6);
 }
 

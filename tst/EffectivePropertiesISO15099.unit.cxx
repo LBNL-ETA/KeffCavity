@@ -38,13 +38,13 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityNegativeYStanda
 
     const double keff = cavity.effectiveConductivity();
 
-    EXPECT_NEAR(keff, 0.354857, 1e-6);
+    EXPECT_NEAR(keff, 0.377186, 1e-6);
 
-    EXPECT_NEAR(cavity.nusselt(), 5.611304, 1e-6);
+    EXPECT_NEAR(cavity.nusselt(), 6.527696, 1e-6);
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor,  0.041793, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor,  0.030883, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenStandardRatio)
@@ -145,13 +145,13 @@ TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatio
 
     const double keff = cavity.effectiveConductivity();
 
-    EXPECT_NEAR(keff, 0.990379, 1e-6);
+    EXPECT_NEAR(keff, 1.039951, 1e-6);
 
-    EXPECT_NEAR(cavity.nusselt(), 14.517909, 1e-6);
+    EXPECT_NEAR(cavity.nusselt(), 16.574408, 1e-6);
 
     const double diffusionResistanceFactor{cavity.effectiveDiffusionResistanceFactor()};
 
-    EXPECT_NEAR(diffusionResistanceFactor, 0.006388, 1e-6);
+    EXPECT_NEAR(diffusionResistanceFactor, 0.004901, 1e-6);
 }
 
 TEST_F(TestEffectivePropertiesISO15099, TestHorizontalFlowGravityIntoScreenRatioMoreThanFive)
