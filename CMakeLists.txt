@@ -7,8 +7,8 @@ set(target_name KeffCavity)
 project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
-set(CMAKE_PROJECT_VERSION_MINOR "0")
-set(CMAKE_PROJECT_VERSION_PATCH "34")
+set(CMAKE_PROJECT_VERSION_MINOR "1")
+set(CMAKE_PROJECT_VERSION_PATCH "0")
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
