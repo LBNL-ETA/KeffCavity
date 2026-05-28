@@ -8,7 +8,22 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "1")
-set(CMAKE_PROJECT_VERSION_PATCH "0")
+set(CMAKE_PROJECT_VERSION_PATCH "1")
+
+# Graceful local-sibling fallback: the `local` CMake preset sets
+# FETCHCONTENT_SOURCE_DIR_<NAME> to ${sourceDir}/../<DepName> for each declared
+# dependency. If a sibling working copy is missing, unset that variable here so
+# FetchContent falls back to the declared remote instead of erroring out.
+foreach(_dep WINDOWSCALC-ENGINE GOOGLETEST)
+    if(DEFINED FETCHCONTENT_SOURCE_DIR_${_dep})
+        if(NOT EXISTS "${FETCHCONTENT_SOURCE_DIR_${_dep}}/CMakeLists.txt")
+            message(STATUS
+                "Local sibling for ${_dep} not found at "
+                "${FETCHCONTENT_SOURCE_DIR_${_dep}}; falling back to remote.")
+            unset(FETCHCONTENT_SOURCE_DIR_${_dep} CACHE)
+        endif()
+    endif()
+endforeach()
 
 include( cmake/KeffCProjectMacros.cmake )
 include( cmake/KeffCinternal_utils.cmake )
@@ -48,7 +63,7 @@ if( DOWNLOAD_GTEST STREQUAL ON )
 		FetchContent_Declare(
 			googletest
 			GIT_REPOSITORY https://github.com/google/googletest.git
-			GIT_TAG v1.14.0
+			GIT_TAG v1.16.0
 		)
 		FetchContent_MakeAvailable(googletest)
 	endif()
@@ -56,7 +71,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.70")
+set(WindowsCalcEngine_Branch "Version_1.0.71")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
