@@ -8,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "1")
-set(CMAKE_PROJECT_VERSION_PATCH "1")
+set(CMAKE_PROJECT_VERSION_PATCH "2")
 
 # Graceful local-sibling fallback: the `local` CMake preset sets
 # FETCHCONTENT_SOURCE_DIR_<NAME> to ${sourceDir}/../<DepName> for each declared
@@ -71,7 +71,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.71")
+set(WindowsCalcEngine_Branch "Version_1.0.72")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
