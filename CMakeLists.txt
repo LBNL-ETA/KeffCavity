@@ -15,7 +15,7 @@ set(CMAKE_PROJECT_VERSION_PATCH "1")
 # dependency. If a sibling working copy is missing, unset that variable here so
 # FetchContent falls back to the declared remote instead of erroring out.
 foreach(_dep WINDOWSCALC-ENGINE GOOGLETEST)
-    if(DEFINED FETCHCONTENT_SOURCE_DIR_${_dep})
+    if(FETCHCONTENT_SOURCE_DIR_${_dep})
         if(NOT EXISTS "${FETCHCONTENT_SOURCE_DIR_${_dep}}/CMakeLists.txt")
             message(STATUS
                 "Local sibling for ${_dep} not found at "
