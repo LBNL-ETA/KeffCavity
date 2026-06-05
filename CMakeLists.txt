@@ -8,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "1")
-set(CMAKE_PROJECT_VERSION_PATCH "3")
+set(CMAKE_PROJECT_VERSION_PATCH "4")
 
 # Local development mode. The `local` preset sets LBNL_LOCAL_SIBLINGS=ON (a cache
 # variable, so it cascades into FetchContent sub-builds). When it is on, prefer a
@@ -79,7 +79,7 @@ if( DOWNLOAD_GTEST STREQUAL ON )
 		FetchContent_Declare(
 			googletest
 			GIT_REPOSITORY https://github.com/google/googletest.git
-			GIT_TAG v1.16.0
+			GIT_TAG v1.17.0
 		)
 		FetchContent_MakeAvailable(googletest)
 	endif()
@@ -87,7 +87,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.73")
+set(WindowsCalcEngine_Branch "Version_1.0.74")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
