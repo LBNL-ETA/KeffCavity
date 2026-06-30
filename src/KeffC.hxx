@@ -214,7 +214,6 @@ namespace KeffCavity
 
         double Nu() override;
 
-        const double area;
         double d;
         double b;
     };

@@ -279,8 +279,7 @@ namespace KeffCavity
                          const CavitySide & side2,
                          const Gases::CGas & gas,
                          const RadiationCalculation radiationCalculation) :
-        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, gas, radiationCalculation),
-        area(area)
+        Cavity(screenFlow, maxXDimension, maxYDimension, side1, side2, gas, radiationCalculation)
     {
         auto H = std::max(maxYDimension, 0.001);
         auto L = std::max(maxXDimension, 0.001);
