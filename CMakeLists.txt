@@ -87,10 +87,7 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-# TEMPORARY (co-development): pinned to the enclosure view-factor feature branch so consumers can
-# use Viewer::computeEnclosureViewFactors before it is merged/tagged. Revert to a released tag
-# (e.g. Version_1.0.75) once the WCE engine lands.
-set(WindowsCalcEngine_Branch "feature/enclosure-view-factors")
+set(WindowsCalcEngine_Branch "Version_1.0.75")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
