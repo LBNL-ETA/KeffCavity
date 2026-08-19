@@ -87,7 +87,9 @@ endif ()
 
 # Test from Windows-CalcEngine should not be visible here
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
-set(WindowsCalcEngine_Branch "Version_1.0.75")
+# Branch pin while the Windows/Clang -fPIC fix is under test. Re-pin to a released
+# tag once it lands.
+set(WindowsCalcEngine_Branch "fix/no-fpic-on-windows")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
