@@ -8,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "1")
-set(CMAKE_PROJECT_VERSION_PATCH "5")
+set(CMAKE_PROJECT_VERSION_PATCH "6")
 
 # Local development mode. The `local` preset sets LBNL_LOCAL_SIBLINGS=ON (a cache
 # variable, so it cascades into FetchContent sub-builds). When it is on, prefer a
@@ -89,7 +89,7 @@ endif ()
 set(BUILD_WCE_TESTING OFF CACHE BOOL "Build Windows-CalcEngine tests" FORCE)
 # Branch pin while the Windows/Clang -fPIC fix is under test. Re-pin to a released
 # tag once it lands.
-set(WindowsCalcEngine_Branch "fix/no-fpic-on-windows")
+set(WindowsCalcEngine_Branch "Version_1.0.76")
 
 if(NOT TARGET Windows-CalcEngine)
     FetchContent_Declare(
