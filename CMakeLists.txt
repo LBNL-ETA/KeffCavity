@@ -8,7 +8,7 @@ project(${target_name})
 
 set(CMAKE_PROJECT_VERSION_MAJOR "1")
 set(CMAKE_PROJECT_VERSION_MINOR "1")
-set(CMAKE_PROJECT_VERSION_PATCH "6")
+set(CMAKE_PROJECT_VERSION_PATCH "7")
 
 # Local development mode. The `local` preset sets LBNL_LOCAL_SIBLINGS=ON (a cache
 # variable, so it cascades into FetchContent sub-builds). When it is on, prefer a
