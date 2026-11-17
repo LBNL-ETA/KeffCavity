@@ -1,7 +1,7 @@
 ```mermaid
 graph TD
     %% Package definitions
-    KeffCavity[KeffCavity<br/><font color='red'>@KeffCavity_Version@</font>]
+    KeffCavity[KeffCavity<br/><font color='red'>@Chart_Self@</font>]
     WindowsCalcEngine[Windows-CalcEngine<br/><font color='red'>@WindowsCalcEngine_Branch@</font>]
 
     %% Package relations
