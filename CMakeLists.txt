@@ -147,6 +147,13 @@ if( BUILD_KeffC_TESTING )
     LIST( APPEND test_src ${all_test_src} )
     
     CREATE_TEST_TARGETS_KeffC( ${target_name} "${test_src}" "" )
+
+    # Register the test executable with CTest when this is the main project, so that
+    # `ctest` runs it. A parent project keeps control of its own test list.
+    if(NOT hasParent)
+      enable_testing()
+      add_test(NAME ${target_name}-test-runner COMMAND ${target_name}_tests)
+    endif()
   endif()
 
 config_compiler_and_linker_KeffC()
